@@ -1,0 +1,41 @@
+/** Styles for theme: Base */
+/* OFF = light grey track, ON = accent-blue gradient track. White knob with a blue shade under it when editable (NumericSetData accent).
+   Red is reserved for errors. */
+.TcHmi_Controls_SetDataFramework_BooleanSetData,
+.sdf-bcf {
+    --sdf-bsd-text-color: #1f2933;
+    --sdf-bsd-border: #c3ccd5;
+    --sdf-bsd-border-hover: #8a96a3;
+    --sdf-bsd-off: #dde3e9;
+    --sdf-bsd-off-text: #4d5965;
+    --sdf-bsd-on: linear-gradient(135deg, #3a86c8 0%, #1f6fb2 100%); /* ends on the accent */
+    --sdf-bsd-on-border: #185a91;
+    --sdf-bsd-on-text: #ffffff;
+    --sdf-bsd-knob-off: #ffffff;
+    --sdf-bsd-knob-off-icon: #6b7785;
+    --sdf-bsd-knob-on: #ffffff;
+    --sdf-bsd-knob-on-icon: #6b7785;
+    --sdf-bsd-knob-shade-on: #0f3d66;
+    --sdf-bsd-accent: #1f6fb2;
+    --sdf-bsd-error: #dc0000;
+}
+
+/* Same palette as the NumericSetData keypad and the StringSetData keyboard. */
+.sdf-bcf {
+    --sdf-bcf-panel: #f4f6f8;
+    --sdf-bcf-surface: #ffffff;
+    --sdf-bcf-surface-down: #e3e8ed;
+    --sdf-bcf-func: #e9edf1;
+    --sdf-bcf-line: #d5dbe1;
+    --sdf-bcf-text: #1f2933;
+    --sdf-bcf-text-2: #6b7785;
+    --sdf-bcf-accent: #1f6fb2;
+    --sdf-bcf-accent-down: #185a91;
+}
+
+/* Lock hint: dark bubble, stands out on the light screen */
+.sdf-bsd-tip {
+    --sdf-tip-background: #1f2933;
+    --sdf-tip-border: #1f2933;
+    --sdf-tip-text: #ffffff;
+}

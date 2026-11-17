@@ -1,0 +1,44 @@
+/** Styles for theme: Base */
+/* OFF: "Cloud" keycap, almost white with a grey outline and a darker grey lip (no blue: blue means editable data).
+   Toggle ON: cyan glass bulb with a glow. Locked: same look, only a lock badge. Red is reserved for errors. */
+.TcHmi_Controls_SetDataFramework_ButtonSetData,
+.sdf-btncf {
+    --sdf-btn-side-text-color: #1f2933;
+    --sdf-btn-background: #f1f4f7;
+    --sdf-btn-background-hover: #e9edf1;
+    --sdf-btn-background-pressed: #dfe4e9;
+    --sdf-btn-border: #c9d1d9;
+    --sdf-btn-edge: #b3bdc7;
+    --sdf-btn-text-color: #1f2933;
+    --sdf-btn-shadow: rgba(16, 24, 40, 0.14);
+    --sdf-btn-glass-core: #f4feff;
+    --sdf-btn-glass-mid: #bdf1fb;
+    --sdf-btn-glass-rim: #83dbef;
+    --sdf-btn-glass-line: #5fc8e2;
+    --sdf-btn-glass-glow: rgba(64, 208, 240, 0.5);
+    --sdf-btn-glass-highlight: rgba(255, 255, 255, 0.85);
+    --sdf-btn-glass-text: #075a6b;
+    --sdf-btn-lock-color: #6b7785;
+    --sdf-btn-accent: #1f6fb2; /* lock-info badge: the framework accent, as in the other controls */
+    --sdf-btn-error: #dc0000;
+}
+
+/* Same palette as the BooleanSetData confirm dialog. */
+.sdf-btncf {
+    --sdf-btncf-panel: #f4f6f8;
+    --sdf-btncf-surface: #ffffff;
+    --sdf-btncf-surface-down: #e3e8ed;
+    --sdf-btncf-func: #e9edf1;
+    --sdf-btncf-line: #d5dbe1;
+    --sdf-btncf-text: #1f2933;
+    --sdf-btncf-text-2: #6b7785;
+    --sdf-btncf-accent: #1f6fb2;
+    --sdf-btncf-accent-down: #185a91;
+}
+
+/* Lock hint: dark bubble, stands out on the light screen */
+.sdf-btn-tip {
+    --sdf-tip-background: #1f2933;
+    --sdf-tip-border: #1f2933;
+    --sdf-tip-text: #ffffff;
+}

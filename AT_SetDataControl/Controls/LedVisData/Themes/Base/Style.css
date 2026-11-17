@@ -1,0 +1,9 @@
+/** Styles for theme: Base */
+/* Unlit = light grey bulb (#b9c2cb). DefaultColor overrides the --sdf-led-u-* shades inline. */
+.TcHmi_Controls_SetDataFramework_LedVisData {
+    --sdf-led-text-color: #1f2933;
+    --sdf-led-u-core: #d9dde2;
+    --sdf-led-u-base: #b9c2cb;
+    --sdf-led-u-rim: #858c92;
+    --sdf-led-u-edge: #787e84;
+}

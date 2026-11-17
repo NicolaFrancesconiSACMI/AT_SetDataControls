@@ -1,0 +1,400 @@
+{
+  "$schema": "../../.hmiframework/Schema/ControlDescription.Schema.json",
+  "apiVersion": 1,
+  "name": "NumericSetData",
+  "namespace": "TcHmi.Controls.SetDataFramework",
+  "displayName": "NumericSetData",
+  "version": {
+    "full": "1.0.0.0",
+    "major": 1,
+    "minor": 0,
+    "revision": 0,
+    "build": 0
+  },
+  "visible": true,
+  "themeable": "Standard",
+  "base": "TcHmi.Controls.System.TcHmiControl",
+  "description": "Shows a numeric PLC value and edits it with a built-in keypad. Limits come from the sibling MinValue / MaxValue of the bound symbol, else from its data type.",
+  "defaultDesignerEvent": ".onValueWritten",
+  "properties": {
+    "containerControl": false,
+    "geometry": {
+      "width": 400,
+      "height": 50
+    }
+  },
+  "template": "Template.html",
+  "icons": [
+    {
+      "name": "Icons/16x16.png",
+      "width": 16,
+      "height": 16
+    }
+  ],
+  "dependencyFiles": [
+    {
+      "name": "NumericSetData.js",
+      "type": "JavaScript",
+      "description": "Contains all the main logic."
+    },
+    {
+      "name": "Style.css",
+      "type": "Stylesheet",
+      "description": "Theme independent style"
+    }
+  ],
+  "themes": {
+    "Base": {
+      "resources": [
+        {
+          "name": "Themes/Base/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    },
+    "Base-Dark": {
+      "resources": [
+        {
+          "name": "Themes/Base-Dark/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    }
+  },
+  "attributes": [
+    {
+      "name": "data-tchmi-value",
+      "propertyName": "Value",
+      "propertySetterName": "setValue",
+      "propertyGetterName": "getValue",
+      "displayName": "Value",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 5,
+      "type": "tchmi:general#/definitions/Number",
+      "category": "NumericSetData",
+      "description": "Numeric symbol to show and edit, e.g. %s%PLC1.MAIN.stSpeed::HmiValue%/s%. Its siblings ::MinValue / ::MaxValue are used as limits when they exist, else the range of its data type.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "TwoWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": null
+    },
+    {
+      "name": "data-tchmi-decimals",
+      "propertyName": "Decimals",
+      "propertySetterName": "setDecimals",
+      "propertyGetterName": "getDecimals",
+      "displayName": "Decimals",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/INT",
+      "category": "NumericSetData",
+      "description": "Decimals shown and accepted (0..10). Forced to 0 for an integer data type.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 3,
+      "defaultValueInternal": 3
+    },
+    {
+      "name": "data-tchmi-lock",
+      "propertyName": "Lock",
+      "propertySetterName": "setLock",
+      "propertyGetterName": "getLock",
+      "displayName": "Lock",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 25,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "NumericSetData",
+      "description": "TRUE: the value is read only and a lock icon is shown. A tap on the box shows Lock Description, if set. When bound, the control stays locked until the symbol delivers its first value.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": true
+    },
+    {
+      "name": "data-tchmi-lock-description",
+      "propertyName": "LockDescription",
+      "propertySetterName": "setLockDescription",
+      "propertyGetterName": "getLockDescription",
+      "displayName": "Lock Description",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 30,
+      "type": "tchmi:general#/definitions/String",
+      "category": "NumericSetData",
+      "description": "Reason shown in a bubble when the locked value box is tapped. Empty: no bubble. Bind %l%...%/l% to localize.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "",
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-hide",
+      "propertyName": "Hide",
+      "propertySetterName": "setHide",
+      "propertyGetterName": "getHide",
+      "displayName": "Hide",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 35,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "NumericSetData",
+      "description": "TRUE: the control is collapsed (takes no space) and cannot be edited.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
+    },
+    {
+      "name": "data-tchmi-text",
+      "propertyName": "Text",
+      "propertySetterName": "setText",
+      "propertyGetterName": "getText",
+      "displayName": "Text",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 20,
+      "type": "tchmi:general#/definitions/String",
+      "category": "NumericSetData",
+      "description": "Description on the left, also the keypad title.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-unit",
+      "propertyName": "Unit",
+      "propertySetterName": "setUnit",
+      "propertyGetterName": "getUnit",
+      "displayName": "Unit",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 15,
+      "type": "tchmi:general#/definitions/String",
+      "category": "NumericSetData",
+      "description": "Unit shown after the value and in the keypad.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-text-width",
+      "propertyName": "TextWidth",
+      "propertySetterName": "setTextWidth",
+      "propertyGetterName": "getTextWidth",
+      "displayName": "TextWidth",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "NumericSetData Layout",
+      "description": "Width of the text on the left. The value box is placed in the remaining width. In %: share of the control width minus the value box, so 100% leaves exactly the box.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 100,
+      "defaultValueInternal": 100
+    },
+    {
+      "name": "data-tchmi-text-width-unit",
+      "propertyName": "TextWidthUnit",
+      "propertySetterName": "setTextWidthUnit",
+      "propertyGetterName": "getTextWidthUnit",
+      "refTo": "TextWidth",
+      "displayName": "TextWidthUnit",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 20,
+      "type": "tchmi:framework#/definitions/MeasurementUnit",
+      "category": "NumericSetData Layout",
+      "description": "Could be 'px' or for relative sizing '%'.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%",
+      "defaultValueInternal": "%"
+    },
+    {
+      "name": "data-tchmi-text-alignment",
+      "propertyName": "TextAlignment",
+      "propertySetterName": "setTextAlignment",
+      "propertyGetterName": "getTextAlignment",
+      "displayName": "TextAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 30,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "NumericSetData Layout",
+      "description": "Horizontal alignment of the text within TextWidth.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Left",
+      "defaultValueInternal": "Left"
+    },
+    {
+      "name": "data-tchmi-set-data-alignment",
+      "propertyName": "SetDataAlignment",
+      "propertySetterName": "setSetDataAlignment",
+      "propertyGetterName": "getSetDataAlignment",
+      "displayName": "SetDataAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 40,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "NumericSetData Layout",
+      "description": "Horizontal alignment of the 180 x 40 px value box in the width left of the text.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Right",
+      "defaultValueInternal": "Right"
+    },
+    {
+      "name": "data-tchmi-audit-trail",
+      "propertyName": "AuditTrail",
+      "propertySetterName": "setAuditTrail",
+      "propertyGetterName": "getAuditTrail",
+      "displayName": "AuditTrail",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 40,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "NumericSetData",
+      "description": "TRUE: every written value is added to the Audit Trail (SacmiTcHmiAuditTrailExt.AddEntry via TcHmi.Functions.SUtils.CallServerFunction).",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
+    },
+    {
+      "name": "data-tchmi-min-label",
+      "propertyName": "MinLabel",
+      "propertySetterName": "setMinLabel",
+      "propertyGetterName": "getMinLabel",
+      "displayName": "MinLabel",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/String",
+      "category": "Keypad",
+      "description": "Keypad label of the minimum. Default %l%MIN%/l%: the project localization text of the key MIN, or MIN if the project has none. A literal text or a %l%...%/l% binding replaces it.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%l%MIN%/l%",
+      "defaultValueInternal": "%l%MIN%/l%"
+    },
+    {
+      "name": "data-tchmi-max-label",
+      "propertyName": "MaxLabel",
+      "propertySetterName": "setMaxLabel",
+      "propertyGetterName": "getMaxLabel",
+      "displayName": "MaxLabel",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 20,
+      "type": "tchmi:general#/definitions/String",
+      "category": "Keypad",
+      "description": "Keypad label of the maximum. Default %l%MAX%/l%: the project localization text of the key MAX, or MAX if the project has none. A literal text or a %l%...%/l% binding replaces it.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%l%MAX%/l%",
+      "defaultValueInternal": "%l%MAX%/l%"
+    },
+    {
+      "name": "data-tchmi-current-label",
+      "propertyName": "CurrentLabel",
+      "propertySetterName": "setCurrentLabel",
+      "propertyGetterName": "getCurrentLabel",
+      "displayName": "CurrentLabel",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 30,
+      "type": "tchmi:general#/definitions/String",
+      "category": "Keypad",
+      "description": "Keypad label of the value before editing. Default %l%CURRENT%/l%: the project localization text of the key CURRENT, or CURRENT if the project has none. A literal text or a %l%...%/l% binding replaces it.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%l%CURRENT%/l%",
+      "defaultValueInternal": "%l%CURRENT%/l%"
+    }
+  ],
+  "attributeCategories": [
+    {
+      "name": "NumericSetData",
+      "displayPriority": 50,
+      "defaultCollapsed": false,
+      "description": "Value, limits and look of the set data."
+    },
+    {
+      "name": "NumericSetData Layout",
+      "displayPriority": 60,
+      "defaultCollapsed": false,
+      "description": "Widths, alignments and sizes of the NumericSetData parts."
+    },
+    {
+      "name": "Keypad",
+      "displayPriority": 500,
+      "defaultCollapsed": true,
+      "description": "Texts of the keypad."
+    }
+  ],
+  "functions": [],
+  "events": [
+    {
+      "name": ".onValueWritten",
+      "displayName": ".onValueWritten",
+      "visible": true,
+      "displayPriority": 10,
+      "category": "Control",
+      "description": "Fired after the keypad wrote a new value to the symbol.",
+      "heritable": true
+    },
+    {
+      "name": ".onLimitExceeded",
+      "displayName": ".onLimitExceeded",
+      "visible": true,
+      "displayPriority": 20,
+      "category": "Control",
+      "description": "Fired when the operator confirmed a value outside MinValue / MaxValue. Nothing is written.",
+      "heritable": true
+    }
+  ],
+  "dataTypes": [
+    {
+      "schema": "Schema/Types.Schema.json"
+    }
+  ]
+}

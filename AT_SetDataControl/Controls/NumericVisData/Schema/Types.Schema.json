@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "definitions": {
+    "TcHmi.Controls.SetDataFramework.NumericVisData": {
+      "type": "object",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkControlType": "NumericVisData",
+      "frameworkControlNamespace": "TcHmi.Controls.SetDataFramework"
+    },
+    "TcHmi.Controls.SetDataFramework.NumericVisData.Sign": {
+      "type": "string",
+      "title": "Sign",
+      "description": "Comparison: value <sign> limit.",
+      "enum": [ ">", "<", ">=", "<=" ]
+    },
+    "TcHmi.Controls.SetDataFramework.NumericVisData.ColorName": {
+      "type": "string",
+      "title": "Limit colour",
+      "description": "Default = no change (theme colour). Custom = the picked custom colour.",
+      "enum": [ "Default", "Red", "Blue", "Green", "Orange", "Custom" ]
+    },
+    "TcHmi.Controls.SetDataFramework.NumericVisData.LimitList": {
+      "type": "array",
+      "title": "Limits",
+      "description": "Limit values. The first one whose condition holds colours the value; put the most severe on top.",
+      "items": {
+        "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.NumericVisData.Limit"
+      }
+    },
+    "TcHmi.Controls.SetDataFramework.NumericVisData.Limit": {
+      "type": "object",
+      "title": "Limit",
+      "description": "Active while value <sign> limit.",
+      "engineeringColumns": [ "limit", "sign", "color", "customColor", "flashing" ],
+      "properties": {
+        "limit": {
+          "type": "number"
+        },
+        "sign": {
+          "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.NumericVisData.Sign"
+        },
+        "color": {
+          "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.NumericVisData.ColorName"
+        },
+        "customColor": {
+          "$ref": "tchmi:framework#/definitions/SolidColor"
+        },
+        "flashing": {
+          "type": "boolean"
+        }
+      },
+      "propertiesMeta": [
+        {
+          "name": "limit",
+          "displayName": "Limit",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "Value compared with the shown value. Can be bound to a symbol.",
+          "defaultValue": 0,
+          "defaultValueInternal": 0
+        },
+        {
+          "name": "sign",
+          "displayName": "Sign",
+          "category": "General",
+          "displayPriority": 20,
+          "description": "Active while value <sign> limit, e.g. '<' with limit 5: active below 5.",
+          "defaultValue": ">",
+          "defaultValueInternal": ">"
+        },
+        {
+          "name": "color",
+          "displayName": "Color",
+          "category": "General",
+          "displayPriority": 30,
+          "description": "Colour of the value text while the limit is active. Default = no change (theme colour, no blinking); Custom = CustomColor.",
+          "defaultValue": "Red",
+          "defaultValueInternal": "Default"
+        },
+        {
+          "name": "customColor",
+          "displayName": "CustomColor",
+          "category": "General",
+          "displayPriority": 35,
+          "description": "Used only with Color = Custom.",
+          "defaultValue": null,
+          "defaultValueInternal": null
+        },
+        {
+          "name": "flashing",
+          "displayName": "Flashing",
+          "category": "General",
+          "displayPriority": 40,
+          "description": "TRUE: the value text blinks while the limit is active.",
+          "defaultValue": false,
+          "defaultValueInternal": false
+        }
+      ]
+    }
+  }
+}

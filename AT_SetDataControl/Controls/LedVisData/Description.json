@@ -1,0 +1,299 @@
+{
+  "$schema": "../../.hmiframework/Schema/ControlDescription.Schema.json",
+  "apiVersion": 1,
+  "name": "LedVisData",
+  "namespace": "TcHmi.Controls.SetDataFramework",
+  "displayName": "LedVisData",
+  "version": {
+    "full": "1.0.0.0",
+    "major": 1,
+    "minor": 0,
+    "revision": 0,
+    "build": 0
+  },
+  "visible": true,
+  "themeable": "Standard",
+  "base": "TcHmi.Controls.System.TcHmiControl",
+  "description": "Round status LED, read only. Shows a BOOL or numeric value: the first matching state lights the LED in its colour (and can make it blink), otherwise it is unlit in DefaultColor.",
+  "properties": {
+    "containerControl": false,
+    "geometry": {
+      "width": 400,
+      "height": 50
+    }
+  },
+  "template": "Template.html",
+  "icons": [
+    {
+      "name": "Icons/16x16.png",
+      "width": 16,
+      "height": 16
+    }
+  ],
+  "dependencyFiles": [
+    {
+      "name": "LedVisData.js",
+      "type": "JavaScript",
+      "description": "Contains all the main logic."
+    },
+    {
+      "name": "Style.css",
+      "type": "Stylesheet",
+      "description": "Theme independent style"
+    }
+  ],
+  "themes": {
+    "Base": {
+      "resources": [
+        {
+          "name": "Themes/Base/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    },
+    "Base-Dark": {
+      "resources": [
+        {
+          "name": "Themes/Base-Dark/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    }
+  },
+  "attributes": [
+    {
+      "name": "data-tchmi-value",
+      "propertyName": "Value",
+      "propertySetterName": "setValue",
+      "propertyGetterName": "getValue",
+      "displayName": "Value",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 5,
+      "type": "tchmi:general#/definitions/Number",
+      "category": "LedVisData",
+      "description": "BOOL or numeric value shown by the LED, e.g. %s%PLC1.MAIN.bPumpOn%/s%. TRUE/FALSE count as 1/0.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": null
+    },
+    {
+      "name": "data-tchmi-default-color",
+      "propertyName": "DefaultColor",
+      "propertySetterName": "setDefaultColor",
+      "propertyGetterName": "getDefaultColor",
+      "displayName": "DefaultColor",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 15,
+      "type": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.LedVisData.ColorName",
+      "category": "LedVisData",
+      "description": "Colour of the unlit LED, used when no state matches (or there is no value). Grey = theme grey; Custom = DefaultCustomColor.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Grey",
+      "defaultValueInternal": "Grey"
+    },
+    {
+      "name": "data-tchmi-default-custom-color",
+      "propertyName": "DefaultCustomColor",
+      "propertySetterName": "setDefaultCustomColor",
+      "propertyGetterName": "getDefaultCustomColor",
+      "displayName": "DefaultCustomColor",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 60,
+      "type": "tchmi:framework#/definitions/SolidColor",
+      "category": "LedVisData",
+      "description": "Used only with DefaultColor = Custom.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": null
+    },
+    {
+      "name": "data-tchmi-hide",
+      "propertyName": "Hide",
+      "propertySetterName": "setHide",
+      "propertyGetterName": "getHide",
+      "displayName": "Hide",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 25,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "LedVisData",
+      "description": "TRUE: the control is collapsed (takes no space).",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
+    },
+    {
+      "name": "data-tchmi-text",
+      "propertyName": "Text",
+      "propertySetterName": "setText",
+      "propertyGetterName": "getText",
+      "displayName": "Text",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 20,
+      "type": "tchmi:general#/definitions/String",
+      "category": "LedVisData",
+      "description": "Description on the left. Shown only with a TextWidth above 0.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-text-width",
+      "propertyName": "TextWidth",
+      "propertySetterName": "setTextWidth",
+      "propertyGetterName": "getTextWidth",
+      "displayName": "TextWidth",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 30,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "LedVisData Layout",
+      "description": "Width of the text on the left. The LED is placed in the remaining width. In %: share of the control width minus the LED and the gap, so 100% leaves exactly the LED.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 0,
+      "defaultValueInternal": 0
+    },
+    {
+      "name": "data-tchmi-text-width-unit",
+      "propertyName": "TextWidthUnit",
+      "propertySetterName": "setTextWidthUnit",
+      "propertyGetterName": "getTextWidthUnit",
+      "refTo": "TextWidth",
+      "displayName": "TextWidthUnit",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 40,
+      "type": "tchmi:framework#/definitions/MeasurementUnit",
+      "category": "LedVisData Layout",
+      "description": "Could be 'px' or for relative sizing '%'.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%",
+      "defaultValueInternal": "%"
+    },
+    {
+      "name": "data-tchmi-text-alignment",
+      "propertyName": "TextAlignment",
+      "propertySetterName": "setTextAlignment",
+      "propertyGetterName": "getTextAlignment",
+      "displayName": "TextAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 50,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "LedVisData Layout",
+      "description": "Horizontal alignment of the text within TextWidth.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Left",
+      "defaultValueInternal": "Left"
+    },
+    {
+      "name": "data-tchmi-led-size",
+      "propertyName": "LedSize",
+      "propertySetterName": "setLedSize",
+      "propertyGetterName": "getLedSize",
+      "displayName": "LedSize",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/Number",
+      "category": "LedVisData Layout",
+      "description": "Diameter of the LED in px. A margin of 0.3 x LedSize around it holds the glow, so the light stays inside the control; LedSize + 2 x glow (48 px for 30) is the control's min width / height.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 30,
+      "defaultValueInternal": 30
+    },
+    {
+      "name": "data-tchmi-led-alignment",
+      "propertyName": "LedAlignment",
+      "propertySetterName": "setLedAlignment",
+      "propertyGetterName": "getLedAlignment",
+      "displayName": "LedAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 20,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "LedVisData Layout",
+      "description": "Horizontal alignment of the LED in the width left of the text.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Right",
+      "defaultValueInternal": "Right"
+    },
+    {
+      "name": "data-tchmi-states",
+      "propertyName": "States",
+      "propertySetterName": "setStates",
+      "propertyGetterName": "getStates",
+      "displayName": "States",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 10,
+      "type": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.LedVisData.StateList",
+      "category": "LedVisData",
+      "description": "LED states (Value, Sign, Color, CustomColor, Flashing). The first one whose condition holds lights the LED in its colour; put the most severe on top. CustomColor is used only with Color = Custom. A state Value can be bound to a symbol. BOOL: one state with Value 1, Sign '='.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "allowSymbolExpressionsInObject": true,
+      "defaultValue": [],
+      "defaultValueInternal": []
+    }
+  ],
+  "attributeCategories": [
+    {
+      "name": "LedVisData",
+      "displayPriority": 50,
+      "defaultCollapsed": false,
+      "description": "Value, states and look of the LED."
+    },
+    {
+      "name": "LedVisData Layout",
+      "displayPriority": 60,
+      "defaultCollapsed": false,
+      "description": "Widths, alignments and sizes of the LedVisData parts."
+    }
+  ],
+  "functions": [],
+  "events": [],
+  "dataTypes": [
+    {
+      "schema": "Schema/Types.Schema.json"
+    }
+  ]
+}

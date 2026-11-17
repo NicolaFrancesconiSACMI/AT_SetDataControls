@@ -1,0 +1,39 @@
+/** Styles for theme: Base-Dark */
+.TcHmi_Controls_SetDataFramework_BooleanSetData,
+.sdf-bcf {
+    --sdf-bsd-text-color: #e6e9ed;
+    --sdf-bsd-border: #4a545e;
+    --sdf-bsd-border-hover: #6b7785;
+    --sdf-bsd-off: #3a434c;
+    --sdf-bsd-off-text: #c3ccd5;
+    /* ON = accent-blue gradient track; knob with a blue shade under it when editable (NumericSetData accent) */
+    --sdf-bsd-on: linear-gradient(135deg, #4a9be0 0%, #2a74b8 100%);
+    --sdf-bsd-on-border: #6fb0e6;
+    --sdf-bsd-on-text: #ffffff;
+    --sdf-bsd-knob-off: #e6e9ed;
+    --sdf-bsd-knob-off-icon: #4a545e;
+    --sdf-bsd-knob-on: #e6e9ed;
+    --sdf-bsd-knob-on-icon: #4a545e;
+    --sdf-bsd-knob-shade-on: #0d2a45;
+    --sdf-bsd-accent: #3a8fd6; /* lock-hint "i" and knob ring: the NumericSetData accent */
+    --sdf-bsd-error: #ff4d4d;
+}
+
+.sdf-bcf {
+    --sdf-bcf-panel: #1e2328;
+    --sdf-bcf-surface: #2b3238;
+    --sdf-bcf-surface-down: #3a434c;
+    --sdf-bcf-func: #353d44;
+    --sdf-bcf-line: #424b54;
+    --sdf-bcf-text: #e6e9ed;
+    --sdf-bcf-text-2: #9aa5b1;
+    --sdf-bcf-accent: #3a8fd6;
+    --sdf-bcf-accent-down: #2c75b3;
+}
+
+/* Lock hint: light bubble, stands out on the dark screen */
+.sdf-bsd-tip {
+    --sdf-tip-background: #e6e9ed;
+    --sdf-tip-border: #e6e9ed;
+    --sdf-tip-text: #1f2933;
+}

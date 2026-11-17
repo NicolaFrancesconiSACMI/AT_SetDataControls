@@ -1,0 +1,13 @@
+/** Styles for theme: Base */
+/* Tinted, borderless-looking fill: clearly different from the white, outlined NumericSetData box. */
+/* Limit colours (names in the Limits list): dark enough to read as text on the tinted box. */
+.TcHmi_Controls_SetDataFramework_NumericVisData {
+    --sdf-nvd-text-color: #1f2933;
+    --sdf-nvd-value-color: #1f2933;
+    --sdf-nvd-background: #e9edf1;
+    --sdf-nvd-border: #d5dbe1;
+    --sdf-nvd-red: #d5000d; /* halfway between #c80000 and the Sacmi red #e2001a */
+    --sdf-nvd-blue: #1f6fb2;
+    --sdf-nvd-green: #15803d;
+    --sdf-nvd-orange: #c2570c;
+}

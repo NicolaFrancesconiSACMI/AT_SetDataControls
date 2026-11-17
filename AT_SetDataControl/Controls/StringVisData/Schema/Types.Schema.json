@@ -1,0 +1,203 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "definitions": {
+    "TcHmi.Controls.SetDataFramework.StringVisData": {
+      "type": "object",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkControlType": "StringVisData",
+      "frameworkControlNamespace": "TcHmi.Controls.SetDataFramework"
+    },
+    "TcHmi.Controls.SetDataFramework.StringVisData.Mode": {
+      "type": "string",
+      "title": "Mode",
+      "description": "String: shows String, coloured by Limits. StateToString: shows the text of the State matching Value.",
+      "enum": [ "String", "StateToString" ]
+    },
+    "TcHmi.Controls.SetDataFramework.StringVisData.LimitSign": {
+      "type": "string",
+      "title": "Sign",
+      "description": "Comparison: String <sign> value (case-insensitive).",
+      "enum": [ "=", "!=" ]
+    },
+    "TcHmi.Controls.SetDataFramework.StringVisData.StateSign": {
+      "type": "string",
+      "title": "Sign",
+      "description": "Comparison: Value <sign> value.",
+      "enum": [ "=", "!=", ">", "<", ">=", "<=" ]
+    },
+    "TcHmi.Controls.SetDataFramework.StringVisData.ColorName": {
+      "type": "string",
+      "title": "Colour",
+      "description": "Default = no change (theme colour). Custom = the picked custom colour.",
+      "enum": [ "Default", "Red", "Blue", "Green", "Orange", "Custom" ]
+    },
+    "TcHmi.Controls.SetDataFramework.StringVisData.LimitList": {
+      "type": "array",
+      "title": "Limits",
+      "description": "String limits. The first one whose condition holds colours the string; put the most severe on top.",
+      "items": {
+        "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.Limit"
+      }
+    },
+    "TcHmi.Controls.SetDataFramework.StringVisData.Limit": {
+      "type": "object",
+      "title": "Limit",
+      "description": "Active while String <sign> value.",
+      "engineeringColumns": [ "value", "sign", "color", "customColor", "flashing" ],
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "sign": {
+          "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.LimitSign"
+        },
+        "color": {
+          "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.ColorName"
+        },
+        "customColor": {
+          "$ref": "tchmi:framework#/definitions/SolidColor"
+        },
+        "flashing": {
+          "type": "boolean"
+        }
+      },
+      "propertiesMeta": [
+        {
+          "name": "value",
+          "displayName": "Value",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "Text compared with String (case-insensitive, trimmed). Can be bound to a symbol.",
+          "defaultValue": "",
+          "defaultValueInternal": ""
+        },
+        {
+          "name": "sign",
+          "displayName": "Sign",
+          "category": "General",
+          "displayPriority": 20,
+          "description": "= : active while String equals value; != : active while it differs.",
+          "defaultValue": "=",
+          "defaultValueInternal": "="
+        },
+        {
+          "name": "color",
+          "displayName": "Color",
+          "category": "General",
+          "displayPriority": 30,
+          "description": "Colour of the string while the limit is active. Default = no change (theme colour, no blinking); Custom = CustomColor.",
+          "defaultValue": "Red",
+          "defaultValueInternal": "Default"
+        },
+        {
+          "name": "customColor",
+          "displayName": "CustomColor",
+          "category": "General",
+          "displayPriority": 35,
+          "description": "Used only with Color = Custom.",
+          "defaultValue": null,
+          "defaultValueInternal": null
+        },
+        {
+          "name": "flashing",
+          "displayName": "Flashing",
+          "category": "General",
+          "displayPriority": 40,
+          "description": "TRUE: the string blinks while the limit is active.",
+          "defaultValue": false,
+          "defaultValueInternal": false
+        }
+      ]
+    },
+    "TcHmi.Controls.SetDataFramework.StringVisData.StateList": {
+      "type": "array",
+      "title": "States",
+      "description": "Number -> text states. The first one whose condition holds is shown; put the most severe on top.",
+      "items": {
+        "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.State"
+      }
+    },
+    "TcHmi.Controls.SetDataFramework.StringVisData.State": {
+      "type": "object",
+      "title": "State",
+      "description": "Active while Value <sign> value.",
+      "engineeringColumns": [ "value", "sign", "text", "color", "customColor", "flashing" ],
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "sign": {
+          "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.StateSign"
+        },
+        "text": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.ColorName"
+        },
+        "customColor": {
+          "$ref": "tchmi:framework#/definitions/SolidColor"
+        },
+        "flashing": {
+          "type": "boolean"
+        }
+      },
+      "propertiesMeta": [
+        {
+          "name": "value",
+          "displayName": "Value",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "Number compared with Value (BOOL: 1 / 0). Can be bound to a symbol.",
+          "defaultValue": 0,
+          "defaultValueInternal": 0
+        },
+        {
+          "name": "sign",
+          "displayName": "Sign",
+          "category": "General",
+          "displayPriority": 20,
+          "description": "Active while Value <sign> value, e.g. '>=' with value 3: active from 3 up.",
+          "defaultValue": "=",
+          "defaultValueInternal": "="
+        },
+        {
+          "name": "text",
+          "displayName": "Text",
+          "category": "General",
+          "displayPriority": 25,
+          "description": "Shown while the state is active (e.g. 3 -> 'Fault'). Empty: the number itself is shown. Can be localized.",
+          "defaultValue": "",
+          "defaultValueInternal": ""
+        },
+        {
+          "name": "color",
+          "displayName": "Color",
+          "category": "General",
+          "displayPriority": 30,
+          "description": "Colour of the text while the state is active. Default = no change (theme colour, no blinking); Custom = CustomColor.",
+          "defaultValue": "Default",
+          "defaultValueInternal": "Default"
+        },
+        {
+          "name": "customColor",
+          "displayName": "CustomColor",
+          "category": "General",
+          "displayPriority": 35,
+          "description": "Used only with Color = Custom.",
+          "defaultValue": null,
+          "defaultValueInternal": null
+        },
+        {
+          "name": "flashing",
+          "displayName": "Flashing",
+          "category": "General",
+          "displayPriority": 40,
+          "description": "TRUE: the text blinks while the state is active (needs a Color other than Default).",
+          "defaultValue": false,
+          "defaultValueInternal": false
+        }
+      ]
+    }
+  }
+}

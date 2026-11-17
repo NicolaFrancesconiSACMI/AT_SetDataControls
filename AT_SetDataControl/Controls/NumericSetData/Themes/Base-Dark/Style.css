@@ -1,0 +1,30 @@
+/** Styles for theme: Base-Dark */
+.TcHmi_Controls_SetDataFramework_NumericSetData {
+    --sdf-nsd-text-color: #e6e9ed;
+    --sdf-nsd-value-color: #e6e9ed;
+    --sdf-nsd-background: #2b3238;
+    --sdf-nsd-background-pressed: #23384b;
+    --sdf-nsd-border: #4a545e;
+    --sdf-nsd-border-hover: #6b7785;
+    --sdf-nsd-accent: #3a8fd6; /* same as the keypad accent */
+    --sdf-nsd-lock-color: #aab4be;
+}
+
+.sdf-kb {
+    --sdf-kb-panel: #1e2328;
+    --sdf-kb-surface: #2b3238;
+    --sdf-kb-surface-down: #3a434c;
+    --sdf-kb-line: #424b54;
+    --sdf-kb-text: #e6e9ed;
+    --sdf-kb-text-2: #9aa5b1;
+    --sdf-kb-accent: #3a8fd6;
+    --sdf-kb-accent-down: #2c75b3;
+    --sdf-kb-error: #ff4d4d;
+}
+
+/* Lock hint: light bubble, stands out on the dark screen */
+.sdf-tip {
+    --sdf-tip-background: #e6e9ed;
+    --sdf-tip-border: #e6e9ed;
+    --sdf-tip-text: #1f2933;
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "definitions": {
+    "TcHmi.Controls.SetDataFramework.ButtonSetData": {
+      "type": "object",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkControlType": "ButtonSetData",
+      "frameworkControlNamespace": "TcHmi.Controls.SetDataFramework"
+    },
+    "TcHmi.Controls.SetDataFramework.ButtonSetData.ButtonType": {
+      "title": "ButtonType",
+      "description": "Standard: TRUE while pressed. Toggle: each click inverts the value.",
+      "type": "string",
+      "enum": [ "Standard", "Toggle" ]
+    },
+    "TcHmi.Controls.SetDataFramework.ButtonSetData.SizeStyle": {
+      "title": "SizeStyle",
+      "description": "Default 120 x 45 (icon left), Small 50 x 50 (icon above), Custom from the Custom attributes.",
+      "type": "string",
+      "enum": [ "Default", "Small", "Custom" ]
+    },
+    "TcHmi.Controls.SetDataFramework.ButtonSetData.IconPosition": {
+      "title": "IconPosition",
+      "description": "Where the icon sits with SizeStyle Custom.",
+      "type": "string",
+      "enum": [ "Left", "Top" ]
+    },
+    "TcHmi.Controls.SetDataFramework.ButtonSetData.NeedConfirm": {
+      "title": "NeedConfirm",
+      "description": "Which clicks ask for a confirmation first (Toggle only).",
+      "type": "string",
+      "enum": [ "None", "SwitchOn", "SwitchOff", "All" ]
+    }
+  }
+}

@@ -1,0 +1,29 @@
+/** Styles for theme: Base-Dark */
+.TcHmi_Controls_SetDataFramework_ComboboxSetData {
+    --sdf-csd-text-color: #e6e9ed;
+    --sdf-csd-value-color: #e6e9ed;
+    --sdf-csd-background: #2b3238;
+    --sdf-csd-background-pressed: #23384b;
+    --sdf-csd-border: #4a545e;
+    --sdf-csd-border-hover: #6b7785;
+    --sdf-csd-accent: #3a8fd6;
+    --sdf-csd-lock-color: #aab4be;
+    --sdf-csd-error: #ff4d4d;
+}
+
+.sdf-cdd {
+    --sdf-cdd-surface: #2b3238;
+    --sdf-cdd-surface-down: #3a434c;
+    --sdf-cdd-selected: #23384b;
+    --sdf-cdd-line: #424b54;
+    --sdf-cdd-text: #e6e9ed;
+    --sdf-cdd-text-2: #9aa5b1;
+    --sdf-cdd-accent: #6fb0e6;
+}
+
+/* Lock hint: light bubble, stands out on the dark screen */
+.sdf-csd-tip {
+    --sdf-tip-background: #e6e9ed;
+    --sdf-tip-border: #e6e9ed;
+    --sdf-tip-text: #1f2933;
+}

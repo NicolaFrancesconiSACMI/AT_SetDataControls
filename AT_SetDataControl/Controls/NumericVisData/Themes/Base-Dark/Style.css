@@ -1,0 +1,12 @@
+/** Styles for theme: Base-Dark */
+/* Limit colours (names in the Limits list): lighter shades that read on the dark box. */
+.TcHmi_Controls_SetDataFramework_NumericVisData {
+    --sdf-nvd-text-color: #e6e9ed;
+    --sdf-nvd-value-color: #e6e9ed;
+    --sdf-nvd-background: #1b2025;
+    --sdf-nvd-border: #3a434c;
+    --sdf-nvd-red: #ff5c5c;
+    --sdf-nvd-blue: #5aa9e6;
+    --sdf-nvd-green: #4ade80;
+    --sdf-nvd-orange: #fb9a3c;
+}

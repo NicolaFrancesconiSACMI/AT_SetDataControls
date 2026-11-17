@@ -1,0 +1,444 @@
+/*
+ * NumericSetData: layout only. Every colour is a variable set in Themes/<Theme>/Style.css.
+ * The keypad (.sdf-kb) lives in the TopMostLayer, outside the control.
+ */
+
+.TcHmi_Controls_SetDataFramework_NumericSetData {
+    overflow: hidden;
+}
+
+/* Touch on Chromium: no grey tap-highlight rectangle behind what is tapped (it ignores the rounded corners).
+   The control and its popups already show their own pressed state. */
+.TcHmi_Controls_SetDataFramework_NumericSetData,
+.sdf-kb,
+.sdf-tip {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide = TRUE: collapsed, without touching the Visibility attribute */
+.TcHmi_Controls_SetDataFramework_NumericSetData.sdf-nsd-hidden {
+    display: none !important;
+}
+
+.TcHmi_Controls_SetDataFramework_NumericSetData-Template {
+    /* Also used by TextWidth in %: 100% = control width - box width - gap (NumericSetData.ts) */
+    --sdf-nsd-box-width: 180px;
+    --sdf-nsd-gap: 4px; /* text right + value box left must not touch */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    column-gap: var(--sdf-nsd-gap);
+    font-family: inherit;
+}
+
+/* Width (TextWidth) and horizontal alignment (TextAlignment) are set inline */
+.sdf-nsd-text {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    color: var(--sdf-nsd-text-color);
+    font-size: 16px;
+    line-height: 1.15;
+    overflow: hidden;
+    overflow-wrap: initial;
+}
+
+/* Remaining width; places the value box (SetDataAlignment, inline) and centres it vertically */
+.sdf-nsd-slot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Fixed --sdf-nsd-box-width x 40, shrinks only when the control is too small */
+.sdf-nsd-valuebox {
+    flex: 0 1 var(--sdf-nsd-box-width);
+    width: var(--sdf-nsd-box-width);
+    height: 40px;
+    max-height: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    /* Outlined input: thin border + accent line at the bottom = "this can be set" */
+    border: 1px solid var(--sdf-nsd-border);
+    border-radius: 8px;
+    background: var(--sdf-nsd-background);
+    box-shadow: inset 0 -2px 0 var(--sdf-nsd-accent);
+    color: var(--sdf-nsd-value-color);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+/* Mouse only: touch screens would keep the hover after a tap */
+@media (hover: hover) {
+    .sdf-nsd-valuebox:hover {
+        border-color: var(--sdf-nsd-border-hover);
+    }
+}
+
+.sdf-nsd-valuebox:active {
+    border-color: var(--sdf-nsd-accent);
+    background: var(--sdf-nsd-background-pressed);
+    box-shadow: inset 0 0 0 1px var(--sdf-nsd-accent);
+}
+
+/* "12.50 mm/s" centred in the space left of the icon */
+.sdf-nsd-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/* All icons sit on the right, after the value, one at a time: edit, lock, lock with "i" or user lock.
+   Each takes the same 18 px, so the value does not move when the state changes. */
+.sdf-nsd-lock,
+.sdf-nsd-lockinfo,
+.sdf-nsd-userlock {
+    display: none;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--sdf-nsd-lock-color);
+}
+
+/* Edit affordance: 16 px drawing + 1 px each side = the 18 px of the lock icons */
+.sdf-nsd-edit {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin: 0 1px;
+    color: var(--sdf-nsd-accent);
+}
+
+/* Lock = TRUE: same box without the accent line (no longer looks like a button),
+   lock icon instead of the edit icon, no press feedback */
+.sdf-nsd-locked .sdf-nsd-valuebox,
+.sdf-nsd-locked .sdf-nsd-valuebox:hover,
+.sdf-nsd-locked .sdf-nsd-valuebox:active {
+    background: var(--sdf-nsd-background);
+    border-color: var(--sdf-nsd-border);
+    box-shadow: none;
+    cursor: default;
+}
+
+/* Lock with a LockDescription: blue lock, a tap shows the description */
+.sdf-nsd-has-hint .sdf-nsd-valuebox,
+.sdf-nsd-has-hint .sdf-nsd-valuebox:hover,
+.sdf-nsd-has-hint .sdf-nsd-valuebox:active {
+    cursor: pointer;
+}
+
+/* Lock with an "i" badge instead of the plain lock, in the same 18 px on the right so the value does not move.
+   The frame is an outline: it takes no space and reads as "press me".
+   Both classes in the selector: it must beat ".sdf-nsd-locked .sdf-nsd-lock", which comes further down. */
+.sdf-nsd-locked.sdf-nsd-has-hint .sdf-nsd-lock {
+    display: none;
+}
+
+.sdf-nsd-has-hint .sdf-nsd-lockinfo {
+    display: block;
+    color: var(--sdf-nsd-accent);
+    outline: 1.5px solid var(--sdf-nsd-accent);
+    outline-offset: 2px;
+    border-radius: 5px;
+    transition: background-color 0.15s;
+}
+
+.sdf-nsd-has-hint .sdf-nsd-valuebox:active .sdf-nsd-lockinfo {
+    background-color: var(--sdf-nsd-background-pressed);
+}
+
+.sdf-nsd-locked .sdf-nsd-lock {
+    display: block;
+}
+
+.sdf-nsd-locked .sdf-nsd-edit {
+    display: none;
+}
+
+/* No "operate" right for the logged-in user (class kept up to date by the framework on login/logout):
+   same box as Lock, user lock icon. Wins over Lock: locked and not allowed shows only the user lock. */
+.TcHmi_Controls_SetDataFramework_NumericSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-nsd-valuebox,
+.TcHmi_Controls_SetDataFramework_NumericSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-nsd-valuebox:hover,
+.TcHmi_Controls_SetDataFramework_NumericSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-nsd-valuebox:active {
+    background: var(--sdf-nsd-background);
+    border-color: var(--sdf-nsd-border);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.TcHmi_Controls_SetDataFramework_NumericSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-nsd-userlock {
+    display: block;
+}
+
+.TcHmi_Controls_SetDataFramework_NumericSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-nsd-lock,
+.TcHmi_Controls_SetDataFramework_NumericSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-nsd-lockinfo,
+.TcHmi_Controls_SetDataFramework_NumericSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-nsd-edit {
+    display: none;
+}
+
+/* ---------- lock hint ---------- */
+
+/* Bubble above the value box (.sdf-tip-below: under it); --sdf-tip-arrow-x is set by the control */
+.sdf-tip {
+    max-width: 280px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid var(--sdf-tip-border, #1f2933);
+    border-radius: 8px;
+    background-color: var(--sdf-tip-background, #1f2933);
+    color: var(--sdf-tip-text, #ffffff);
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.24);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sdf-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--sdf-tip-arrow-x, 50%);
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: var(--sdf-tip-background, #1f2933);
+}
+
+.sdf-tip.sdf-tip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--sdf-tip-background, #1f2933);
+}
+
+/* ---------- keypad ---------- */
+
+.sdf-kb {
+    width: 400px;
+    height: 420px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sdf-kb-panel, #f4f6f8);
+    color: var(--sdf-kb-text, #1f2933);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.28), 0 2px 6px rgba(16, 24, 40, 0.12);
+    font-family: inherit;
+    /* Repeated taps must not select text or zoom; only the value box is selectable */
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.sdf-kb button {
+    font: inherit;
+    color: inherit;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sdf-kb-title {
+    flex: 0 0 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px 0 40px;
+    position: relative;
+    background-color: var(--sdf-kb-surface, #ffffff);
+    box-shadow: inset 0 -1px 0 var(--sdf-kb-line, #d5dbe1);
+    cursor: move;
+    touch-action: none; /* the drag must not scroll or zoom */
+}
+
+/* grip dots: this bar drags the keypad */
+.sdf-kb-title::before {
+    content: "\2807\2807";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    letter-spacing: -6px;
+    color: var(--sdf-kb-text-2, #6b7785);
+    pointer-events: none;
+}
+
+.sdf-kb-title-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdf-kb-close {
+    flex: 0 0 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 20px !important;
+    background: transparent;
+}
+
+.sdf-kb-close.down {
+    background-color: var(--sdf-kb-surface-down, #e3e8ed);
+}
+
+.sdf-kb-value {
+    flex: 0 0 56px;
+    margin: 12px 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 16px 0 8px;
+    border-radius: 10px;
+    background-color: var(--sdf-kb-surface, #ffffff);
+    box-shadow: inset 0 0 0 1px var(--sdf-kb-line, #d5dbe1);
+}
+
+.sdf-kb-value:focus-within {
+    box-shadow: inset 0 0 0 2px var(--sdf-kb-accent, #1f6fb2);
+}
+
+/* The theme styles every <input> (and its :focus): the inner field must stay invisible,
+   only .sdf-kb-value draws the box and its focus ring. */
+.sdf-kb .sdf-kb-input,
+.sdf-kb .sdf-kb-input:focus,
+.sdf-kb .sdf-kb-input:focus-visible,
+.sdf-kb .sdf-kb-input:hover {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+.sdf-kb-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    font-size: 30px;
+    text-align: right;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.sdf-kb-unit {
+    flex: 0 0 auto;
+    font-size: 20px;
+    color: var(--sdf-kb-text-2, #6b7785);
+    pointer-events: none;
+}
+
+.sdf-kb-limits {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 3%;
+    padding: 8px 12px 4px;
+}
+
+.sdf-kb-limit {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    white-space: nowrap;
+}
+
+.sdf-kb-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--sdf-kb-text-2, #6b7785);
+}
+
+.sdf-kb-number {
+    font-size: 14px;
+    min-height: 1.2em;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdf-kb-keys {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 6px;
+    padding: 8px 12px 12px;
+}
+
+.sdf-kb-key {
+    border-radius: 10px;
+    font-size: 26px !important;
+    background-color: var(--sdf-kb-surface, #ffffff) !important;
+    box-shadow: inset 0 0 0 1px var(--sdf-kb-line, #d5dbe1), 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+.sdf-kb-key.down {
+    background-color: var(--sdf-kb-surface-down, #e3e8ed) !important;
+    box-shadow: inset 0 0 0 1px var(--sdf-kb-line, #d5dbe1);
+}
+
+.sdf-kb-key.sdf-kb-key-accent {
+    background-color: var(--sdf-kb-accent, #1f6fb2) !important;
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.16);
+}
+
+.sdf-kb-key.sdf-kb-key-accent.down {
+    background-color: var(--sdf-kb-accent-down, #185a91) !important;
+    box-shadow: none;
+}
+
+/* "." on an integer type */
+.sdf-kb-key.sdf-kb-key-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+/* ---------- error: value / limit out of range. Removed on the next edit ---------- */
+@keyframes sdf-kb-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+.sdf-kb-error,
+.sdf-kb-error * {
+    color: var(--sdf-kb-error, #dc0000) !important;
+}
+
+.sdf-kb-value.sdf-kb-error {
+    box-shadow: inset 0 0 0 2px var(--sdf-kb-error, #dc0000) !important;
+}
+
+.sdf-kb-error {
+    animation: sdf-kb-blink 0.8s steps(1, end) infinite;
+}

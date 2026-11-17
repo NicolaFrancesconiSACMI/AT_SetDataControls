@@ -1,0 +1,9 @@
+/** Styles for theme: Base-Dark */
+/* Unlit = dark grey bulb (#4d5761), off but still visible on the dark screen. DefaultColor overrides it inline. */
+.TcHmi_Controls_SetDataFramework_LedVisData {
+    --sdf-led-text-color: #e6e9ed;
+    --sdf-led-u-core: #9da3a8;
+    --sdf-led-u-base: #4d5761;
+    --sdf-led-u-rim: #373f46;
+    --sdf-led-u-edge: #32393f;
+}

@@ -1,0 +1,104 @@
+/*
+ * LedVisData: layout + the glass bulb. The unlit colours are variables set in Themes/<Theme>/Style.css;
+ * LedVisData.ts overrides them inline from a non-Grey DefaultColor and sets the lit ones (--sdf-led-l-*) from the active state.
+ * Same bulb language as the ButtonSetData ON state: pale core, coloured rim, glow, highlight on the top half.
+ */
+
+/* The glow has its own margin around the bulb, so all the light stays inside the control */
+.TcHmi_Controls_SetDataFramework_LedVisData {
+    overflow: hidden;
+}
+
+/* Hide = TRUE: collapsed, without touching the Visibility attribute */
+.TcHmi_Controls_SetDataFramework_LedVisData.sdf-led-hidden {
+    display: none !important;
+}
+
+.TcHmi_Controls_SetDataFramework_LedVisData-Template {
+    /* Set by LedSize (LedVisData.ts): bulb diameter, glow reach (= margin and blur), LED box = bulb + 2 x glow.
+       The box is used by TextWidth in % (100% = control width - box - gap) and is the control's min width / height. */
+    --sdf-led-size: 30px;
+    --sdf-led-halo: 9px;
+    --sdf-led-box: 48px;
+    --sdf-led-gap: 4px; /* text right + LED left must not touch */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    column-gap: var(--sdf-led-gap);
+    font-family: inherit;
+}
+
+/* Width (TextWidth) and horizontal alignment (TextAlignment) are set inline */
+.sdf-led-text {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    color: var(--sdf-led-text-color);
+    font-size: 16px;
+    line-height: 1.15;
+    overflow: hidden;
+    overflow-wrap: initial;
+}
+
+/* Remaining width; places the LED (LedAlignment, inline) and centres it vertically */
+.sdf-led-slot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* ---------- the bulb: unlit = DefaultColor / theme grey, no glow ---------- */
+/* LedSize x LedSize, never squeezed; the margin is the room for the glow */
+.sdf-led-lamp {
+    position: relative;
+    flex: 0 0 auto;
+    width: var(--sdf-led-size);
+    height: var(--sdf-led-size);
+    margin: var(--sdf-led-halo);
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 36%, var(--sdf-led-u-core) 0%, var(--sdf-led-u-base) 62%, var(--sdf-led-u-rim) 100%);
+    box-shadow: inset 0 0 0 1px var(--sdf-led-u-edge), inset 0 -2px 3px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+}
+
+/* Glass highlight on the top half */
+.sdf-led-lamp::after {
+    content: "";
+    position: absolute;
+    left: 22%;
+    top: 8%;
+    width: 56%;
+    height: 38%;
+    border-radius: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+    opacity: 0.55;
+}
+
+/* ---------- lit: a state matched ---------- */
+.sdf-led-lit .sdf-led-lamp {
+    background: radial-gradient(circle at 50% 40%, var(--sdf-led-l-core) 0%, var(--sdf-led-l-mid) 38%, var(--sdf-led-l-base) 74%, var(--sdf-led-l-rim) 100%);
+    box-shadow: inset 0 0 0 1px var(--sdf-led-l-edge),
+        0 0 var(--sdf-led-halo) var(--sdf-led-l-glow),
+        0 0 calc(var(--sdf-led-size) * 0.12) var(--sdf-led-l-glow-strong);
+}
+
+.sdf-led-lit .sdf-led-lamp::after {
+    opacity: 1;
+}
+
+/* ---------- flashing: lit <-> unlit in the state colour ----------
+   The off half comes from the page-wide blink clock (startFlashClock in LedVisData.ts toggles 'sdf-flash-off' on <html>),
+   so every flashing LedVisData / NumericVisData / StringVisData on the page blinks in phase. */
+.sdf-flash-off .sdf-led-flashing .sdf-led-lamp {
+    background: radial-gradient(circle at 50% 36%, var(--sdf-led-l-mid) 0%, var(--sdf-led-l-base) 62%, var(--sdf-led-l-rim) 100%);
+    box-shadow: inset 0 0 0 1px var(--sdf-led-l-edge), inset 0 -2px 3px rgba(0, 0, 0, 0.18);
+}
+
+.sdf-flash-off .sdf-led-flashing .sdf-led-lamp::after {
+    opacity: 0.55;
+}

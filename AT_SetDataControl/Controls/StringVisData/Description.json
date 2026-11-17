@@ -1,0 +1,339 @@
+{
+  "$schema": "../../.hmiframework/Schema/ControlDescription.Schema.json",
+  "apiVersion": 1,
+  "name": "StringVisData",
+  "namespace": "TcHmi.Controls.SetDataFramework",
+  "displayName": "StringVisData",
+  "version": {
+    "full": "1.0.0.0",
+    "major": 1,
+    "minor": 0,
+    "revision": 0,
+    "build": 0
+  },
+  "visible": true,
+  "themeable": "Standard",
+  "base": "TcHmi.Controls.System.TcHmiControl",
+  "description": "Shows a text, read only. Mode String: a STRING, coloured (and blinking) by Limits. Mode StateToString: a number translated into a text by States, each with its colour.",
+  "properties": {
+    "containerControl": false,
+    "geometry": {
+      "width": 400,
+      "height": 50
+    }
+  },
+  "template": "Template.html",
+  "icons": [
+    {
+      "name": "Icons/16x16.png",
+      "width": 16,
+      "height": 16
+    }
+  ],
+  "dependencyFiles": [
+    {
+      "name": "StringVisData.js",
+      "type": "JavaScript",
+      "description": "Contains all the main logic."
+    },
+    {
+      "name": "Style.css",
+      "type": "Stylesheet",
+      "description": "Theme independent style"
+    }
+  ],
+  "themes": {
+    "Base": {
+      "resources": [
+        {
+          "name": "Themes/Base/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    },
+    "Base-Dark": {
+      "resources": [
+        {
+          "name": "Themes/Base-Dark/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    }
+  },
+  "attributes": [
+    {
+      "name": "data-tchmi-mode",
+      "propertyName": "Mode",
+      "propertySetterName": "setMode",
+      "propertyGetterName": "getMode",
+      "displayName": "Mode",
+      "visible": true,
+      "themeable": "None",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "displayPriority": 5,
+      "type": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.Mode",
+      "category": "StringVisData",
+      "description": "String: shows String, coloured by Limits. StateToString: shows the text of the first State matching Value (number -> text).",
+      "defaultValue": "String",
+      "defaultValueInternal": "String"
+    },
+    {
+      "name": "data-tchmi-string",
+      "propertyName": "String",
+      "propertySetterName": "setString",
+      "propertyGetterName": "getString",
+      "displayName": "String",
+      "visible": true,
+      "themeable": "None",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/String",
+      "category": "StringVisData",
+      "description": "String to show (Mode = String), e.g. %s%PLC1.MAIN.sRecipeName%/s%.",
+      "defaultValue": null,
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-limits",
+      "propertyName": "Limits",
+      "propertySetterName": "setLimits",
+      "propertyGetterName": "getLimits",
+      "displayName": "Limits",
+      "visible": true,
+      "themeable": "None",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "displayPriority": 15,
+      "type": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.LimitList",
+      "category": "StringVisData",
+      "description": "Mode = String. Limits (Value, Sign = / !=, Color, CustomColor, Flashing), compared case-insensitively. The first one whose condition holds colours the string; put the most severe on top. Color: Default (no change), Red, Blue, Green, Orange or Custom (CustomColor).",
+      "allowSymbolExpressionsInObject": true,
+      "defaultValue": [],
+      "defaultValueInternal": []
+    },
+    {
+      "name": "data-tchmi-text",
+      "propertyName": "Text",
+      "propertySetterName": "setText",
+      "propertyGetterName": "getText",
+      "displayName": "Text",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 25,
+      "type": "tchmi:general#/definitions/String",
+      "category": "StringVisData",
+      "description": "Description on the left.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-hide",
+      "propertyName": "Hide",
+      "propertySetterName": "setHide",
+      "propertyGetterName": "getHide",
+      "displayName": "Hide",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 30,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "StringVisData",
+      "description": "TRUE: the control is collapsed (takes no space).",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
+    },
+    {
+      "name": "data-tchmi-value",
+      "propertyName": "Value",
+      "propertySetterName": "setValue",
+      "propertyGetterName": "getValue",
+      "displayName": "Value",
+      "visible": true,
+      "themeable": "None",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "displayPriority": 60,
+      "type": "tchmi:general#/definitions/Number",
+      "category": "StringVisData",
+      "description": "Mode = StateToString. Number to translate into a text by States (BOOL: 1 / 0), e.g. %s%PLC1.MAIN.nState%/s%.",
+      "defaultValue": null,
+      "defaultValueInternal": null
+    },
+    {
+      "name": "data-tchmi-states",
+      "propertyName": "States",
+      "propertySetterName": "setStates",
+      "propertyGetterName": "getStates",
+      "displayName": "States",
+      "visible": true,
+      "themeable": "None",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "displayPriority": 70,
+      "type": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.StringVisData.StateList",
+      "category": "StringVisData",
+      "description": "Mode = StateToString. States (Value, Sign = != > < >= <=, Text, Color, CustomColor, Flashing). The first one whose condition holds shows its Text (the number when empty) in its colour; put the most severe on top. No match: the number in the theme colour.",
+      "allowSymbolExpressionsInObject": true,
+      "defaultValue": [],
+      "defaultValueInternal": []
+    },
+    {
+      "name": "data-tchmi-string-width",
+      "propertyName": "StringWidth",
+      "propertySetterName": "setStringWidth",
+      "propertyGetterName": "getStringWidth",
+      "displayName": "StringWidth",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 5,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "StringVisData Layout",
+      "description": "Width of the value box. Default 180 px, the same as StringSetData. In %: share of the control width. Widen it for long strings.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 180,
+      "defaultValueInternal": 180
+    },
+    {
+      "name": "data-tchmi-string-width-unit",
+      "propertyName": "StringWidthUnit",
+      "propertySetterName": "setStringWidthUnit",
+      "propertyGetterName": "getStringWidthUnit",
+      "refTo": "StringWidth",
+      "displayName": "StringWidthUnit",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:framework#/definitions/MeasurementUnit",
+      "category": "StringVisData Layout",
+      "description": "Could be 'px' or for relative sizing '%'.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "px",
+      "defaultValueInternal": "px"
+    },
+    {
+      "name": "data-tchmi-text-width",
+      "propertyName": "TextWidth",
+      "propertySetterName": "setTextWidth",
+      "propertyGetterName": "getTextWidth",
+      "displayName": "TextWidth",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 15,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "StringVisData Layout",
+      "description": "Width of the text on the left. The value box is placed in the remaining width. In %: share of the control width minus the value box, so 100% leaves exactly the box.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 100,
+      "defaultValueInternal": 100
+    },
+    {
+      "name": "data-tchmi-text-width-unit",
+      "propertyName": "TextWidthUnit",
+      "propertySetterName": "setTextWidthUnit",
+      "propertyGetterName": "getTextWidthUnit",
+      "refTo": "TextWidth",
+      "displayName": "TextWidthUnit",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 20,
+      "type": "tchmi:framework#/definitions/MeasurementUnit",
+      "category": "StringVisData Layout",
+      "description": "Could be 'px' or for relative sizing '%'.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%",
+      "defaultValueInternal": "%"
+    },
+    {
+      "name": "data-tchmi-text-alignment",
+      "propertyName": "TextAlignment",
+      "propertySetterName": "setTextAlignment",
+      "propertyGetterName": "getTextAlignment",
+      "displayName": "TextAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 30,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "StringVisData Layout",
+      "description": "Horizontal alignment of the text within TextWidth.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Left",
+      "defaultValueInternal": "Left"
+    },
+    {
+      "name": "data-tchmi-value-alignment",
+      "propertyName": "ValueAlignment",
+      "propertySetterName": "setValueAlignment",
+      "propertyGetterName": "getValueAlignment",
+      "displayName": "ValueAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 40,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "StringVisData Layout",
+      "description": "Horizontal alignment of the value box (StringWidth) in the width left of the text.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Right",
+      "defaultValueInternal": "Right"
+    }
+  ],
+  "attributeCategories": [
+    {
+      "name": "StringVisData",
+      "displayPriority": 50,
+      "defaultCollapsed": false,
+      "description": "Value and look of the visualized data."
+    },
+    {
+      "name": "StringVisData Layout",
+      "displayPriority": 60,
+      "defaultCollapsed": false,
+      "description": "Widths, alignments and sizes of the StringVisData parts."
+    }
+  ],
+  "functions": [],
+  "events": [],
+  "dataTypes": [
+    {
+      "schema": "Schema/Types.Schema.json"
+    }
+  ]
+}

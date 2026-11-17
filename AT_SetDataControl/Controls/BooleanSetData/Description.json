@@ -1,0 +1,391 @@
+{
+  "$schema": "../../.hmiframework/Schema/ControlDescription.Schema.json",
+  "apiVersion": 1,
+  "name": "BooleanSetData",
+  "namespace": "TcHmi.Controls.SetDataFramework",
+  "displayName": "BooleanSetData",
+  "version": {
+    "full": "1.0.0.0",
+    "major": 1,
+    "minor": 0,
+    "revision": 0,
+    "build": 0
+  },
+  "visible": true,
+  "themeable": "Standard",
+  "base": "TcHmi.Controls.System.TcHmiControl",
+  "description": "Shows a BOOL PLC value as a switch and toggles it on press, optionally after a confirmation.",
+  "defaultDesignerEvent": ".onValueWritten",
+  "properties": {
+    "containerControl": false,
+    "geometry": {
+      "width": 400,
+      "height": 50
+    }
+  },
+  "template": "Template.html",
+  "icons": [
+    {
+      "name": "Icons/16x16.png",
+      "width": 16,
+      "height": 16
+    }
+  ],
+  "dependencyFiles": [
+    {
+      "name": "BooleanSetData.js",
+      "type": "JavaScript",
+      "description": "Contains all the main logic."
+    },
+    {
+      "name": "Style.css",
+      "type": "Stylesheet",
+      "description": "Theme independent style"
+    }
+  ],
+  "themes": {
+    "Base": {
+      "resources": [
+        {
+          "name": "Themes/Base/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    },
+    "Base-Dark": {
+      "resources": [
+        {
+          "name": "Themes/Base-Dark/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    }
+  },
+  "attributes": [
+    {
+      "name": "data-tchmi-variable",
+      "propertyName": "Variable",
+      "propertySetterName": "setVariable",
+      "propertyGetterName": "getVariable",
+      "displayName": "Variable",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 5,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "BooleanSetData",
+      "description": "BOOL to show and toggle, e.g. %s%PLC1.MAIN.bPump%/s%. Bound to a symbol it is written directly; unbound the attribute itself is set.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "TwoWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": null
+    },
+    {
+      "name": "data-tchmi-lock",
+      "propertyName": "Lock",
+      "propertySetterName": "setLock",
+      "propertyGetterName": "getLock",
+      "displayName": "Lock",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 25,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "BooleanSetData",
+      "description": "TRUE: the value is read only and a lock icon is shown in the knob. A tap on the switch shows Lock Description, if set. When bound, the control stays locked until the symbol delivers its first value.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": true
+    },
+    {
+      "name": "data-tchmi-lock-description",
+      "propertyName": "LockDescription",
+      "propertySetterName": "setLockDescription",
+      "propertyGetterName": "getLockDescription",
+      "displayName": "Lock Description",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 30,
+      "type": "tchmi:general#/definitions/String",
+      "category": "BooleanSetData",
+      "description": "Reason shown in a bubble when the locked switch is tapped. Empty: no bubble. Bind %l%...%/l% to localize.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "",
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-hide",
+      "propertyName": "Hide",
+      "propertySetterName": "setHide",
+      "propertyGetterName": "getHide",
+      "displayName": "Hide",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 35,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "BooleanSetData",
+      "description": "TRUE: the control is collapsed (takes no space) and cannot be operated.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
+    },
+    {
+      "name": "data-tchmi-text",
+      "propertyName": "Text",
+      "propertySetterName": "setText",
+      "propertyGetterName": "getText",
+      "displayName": "Text",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/String",
+      "category": "BooleanSetData",
+      "description": "Description on the left, also the confirm dialog title.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-on-text",
+      "propertyName": "OnText",
+      "propertySetterName": "setOnText",
+      "propertyGetterName": "getOnText",
+      "displayName": "OnText",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 15,
+      "type": "tchmi:general#/definitions/String",
+      "category": "BooleanSetData",
+      "description": "Text in the switch when TRUE. Default %l%ON%/l%: the project localization text of the key ON, or ON if the project has none. A literal text or a %l%...%/l% binding replaces it.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%l%ON%/l%",
+      "defaultValueInternal": "%l%ON%/l%"
+    },
+    {
+      "name": "data-tchmi-off-text",
+      "propertyName": "OffText",
+      "propertySetterName": "setOffText",
+      "propertyGetterName": "getOffText",
+      "displayName": "OffText",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 20,
+      "type": "tchmi:general#/definitions/String",
+      "category": "BooleanSetData",
+      "description": "Text in the switch when FALSE. Default %l%OFF%/l%: the project localization text of the key OFF, or OFF if the project has none. A literal text or a %l%...%/l% binding replaces it.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%l%OFF%/l%",
+      "defaultValueInternal": "%l%OFF%/l%"
+    },
+    {
+      "name": "data-tchmi-need-confirm",
+      "propertyName": "NeedConfirm",
+      "propertySetterName": "setNeedConfirm",
+      "propertyGetterName": "getNeedConfirm",
+      "displayName": "NeedConfirm",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 40,
+      "type": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.BooleanSetData.NeedConfirm",
+      "category": "BooleanSetData",
+      "description": "Which presses ask for a confirmation first: None, SwitchOn (FALSE -> TRUE), SwitchOff (TRUE -> FALSE) or All.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "None",
+      "defaultValueInternal": "None"
+    },
+    {
+      "name": "data-tchmi-text-width",
+      "propertyName": "TextWidth",
+      "propertySetterName": "setTextWidth",
+      "propertyGetterName": "getTextWidth",
+      "displayName": "TextWidth",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "BooleanSetData Layout",
+      "description": "Width of the text on the left. The switch is placed in the remaining width. In %: share of the control width minus the switch, so 100% leaves exactly the switch.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 100,
+      "defaultValueInternal": 100
+    },
+    {
+      "name": "data-tchmi-text-width-unit",
+      "propertyName": "TextWidthUnit",
+      "propertySetterName": "setTextWidthUnit",
+      "propertyGetterName": "getTextWidthUnit",
+      "refTo": "TextWidth",
+      "displayName": "TextWidthUnit",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 20,
+      "type": "tchmi:framework#/definitions/MeasurementUnit",
+      "category": "BooleanSetData Layout",
+      "description": "Could be 'px' or for relative sizing '%'.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%",
+      "defaultValueInternal": "%"
+    },
+    {
+      "name": "data-tchmi-text-alignment",
+      "propertyName": "TextAlignment",
+      "propertySetterName": "setTextAlignment",
+      "propertyGetterName": "getTextAlignment",
+      "displayName": "TextAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 30,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "BooleanSetData Layout",
+      "description": "Horizontal alignment of the text within TextWidth.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Left",
+      "defaultValueInternal": "Left"
+    },
+    {
+      "name": "data-tchmi-toggle-alignment",
+      "propertyName": "ToggleAlignment",
+      "propertySetterName": "setToggleAlignment",
+      "propertyGetterName": "getToggleAlignment",
+      "displayName": "ToggleAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 40,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "BooleanSetData Layout",
+      "description": "Horizontal alignment of the switch (120 x 34 px) in the width left of the text.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Right",
+      "defaultValueInternal": "Right"
+    },
+    {
+      "name": "data-tchmi-audit-trail",
+      "propertyName": "AuditTrail",
+      "propertySetterName": "setAuditTrail",
+      "propertyGetterName": "getAuditTrail",
+      "displayName": "AuditTrail",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 45,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "BooleanSetData",
+      "description": "TRUE: every written value is added to the Audit Trail (SacmiTcHmiAuditTrailExt.AddEntry via TcHmi.Functions.SUtils.CallServerFunction) as 1 / 0.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
+    },
+    {
+      "name": "data-tchmi-confirm-label",
+      "propertyName": "ConfirmLabel",
+      "propertySetterName": "setConfirmLabel",
+      "propertyGetterName": "getConfirmLabel",
+      "displayName": "ConfirmLabel",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/String",
+      "category": "Confirm",
+      "description": "Text of the button that writes the value. Default %l%CONFIRM%/l%: the project localization text of the key CONFIRM, or CONFIRM if the project has none. A literal text or a %l%...%/l% binding replaces it.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%l%CONFIRM%/l%",
+      "defaultValueInternal": "%l%CONFIRM%/l%"
+    },
+    {
+      "name": "data-tchmi-cancel-label",
+      "propertyName": "CancelLabel",
+      "propertySetterName": "setCancelLabel",
+      "propertyGetterName": "getCancelLabel",
+      "displayName": "CancelLabel",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 20,
+      "type": "tchmi:general#/definitions/String",
+      "category": "Confirm",
+      "description": "Text of the button that closes the dialog without writing. Default %l%CANCEL%/l%: the project localization text of the key CANCEL, or CANCEL if the project has none. A literal text or a %l%...%/l% binding replaces it.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%l%CANCEL%/l%",
+      "defaultValueInternal": "%l%CANCEL%/l%"
+    }
+  ],
+  "attributeCategories": [
+    {
+      "name": "BooleanSetData",
+      "displayPriority": 50,
+      "defaultCollapsed": false,
+      "description": "Value and look of the set data."
+    },
+    {
+      "name": "BooleanSetData Layout",
+      "displayPriority": 60,
+      "defaultCollapsed": false,
+      "description": "Widths, alignments and sizes of the BooleanSetData parts."
+    },
+    {
+      "name": "Confirm",
+      "displayPriority": 500,
+      "defaultCollapsed": true,
+      "description": "Texts of the confirm dialog."
+    }
+  ],
+  "functions": [],
+  "events": [
+    {
+      "name": ".onValueWritten",
+      "displayName": ".onValueWritten",
+      "visible": true,
+      "displayPriority": 10,
+      "category": "Control",
+      "description": "Fired after a new value was written (after the confirmation, if one was needed).",
+      "heritable": true
+    }
+  ],
+  "dataTypes": [
+    {
+      "schema": "Schema/Types.Schema.json"
+    }
+  ]
+}

@@ -1,0 +1,373 @@
+{
+  "$schema": "../../.hmiframework/Schema/ControlDescription.Schema.json",
+  "apiVersion": 1,
+  "name": "StringSetData",
+  "namespace": "TcHmi.Controls.SetDataFramework",
+  "displayName": "StringSetData",
+  "version": {
+    "full": "1.0.0.0",
+    "major": 1,
+    "minor": 0,
+    "revision": 0,
+    "build": 0
+  },
+  "visible": true,
+  "themeable": "Standard",
+  "base": "TcHmi.Controls.System.TcHmiControl",
+  "description": "Shows a string PLC value and edits it with a built-in alphanumeric keyboard. The maximum length comes from the data type of the bound symbol (STRING(n)).",
+  "defaultDesignerEvent": ".onValueWritten",
+  "properties": {
+    "containerControl": false,
+    "geometry": {
+      "width": 400,
+      "height": 50
+    }
+  },
+  "template": "Template.html",
+  "icons": [
+    {
+      "name": "Icons/16x16.png",
+      "width": 16,
+      "height": 16
+    }
+  ],
+  "dependencyFiles": [
+    {
+      "name": "StringSetData.js",
+      "type": "JavaScript",
+      "description": "Contains all the main logic."
+    },
+    {
+      "name": "Style.css",
+      "type": "Stylesheet",
+      "description": "Theme independent style"
+    }
+  ],
+  "themes": {
+    "Base": {
+      "resources": [
+        {
+          "name": "Themes/Base/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    },
+    "Base-Dark": {
+      "resources": [
+        {
+          "name": "Themes/Base-Dark/Style.css",
+          "type": "Stylesheet",
+          "description": "Theme dependent style"
+        }
+      ]
+    }
+  },
+  "attributes": [
+    {
+      "name": "data-tchmi-string",
+      "propertyName": "String",
+      "propertySetterName": "setString",
+      "propertyGetterName": "getString",
+      "displayName": "String",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 5,
+      "type": "tchmi:general#/definitions/String",
+      "category": "StringSetData",
+      "description": "String to show and edit, e.g. %s%PLC1.MAIN.sRecipe%/s%. Bound to a symbol the keyboard writes it directly; unbound the attribute itself is set.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "TwoWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": null
+    },
+    {
+      "name": "data-tchmi-lock",
+      "propertyName": "Lock",
+      "propertySetterName": "setLock",
+      "propertyGetterName": "getLock",
+      "displayName": "Lock",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 15,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "StringSetData",
+      "description": "TRUE: the value is read only and a lock icon is shown. A tap on the box shows Lock Description, if set. When bound, the control stays locked until the symbol delivers its first value.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": true
+    },
+    {
+      "name": "data-tchmi-lock-description",
+      "propertyName": "LockDescription",
+      "propertySetterName": "setLockDescription",
+      "propertyGetterName": "getLockDescription",
+      "displayName": "Lock Description",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 20,
+      "type": "tchmi:general#/definitions/String",
+      "category": "StringSetData",
+      "description": "Reason shown in a bubble when the locked value box is tapped. Empty: no bubble. Bind %l%...%/l% to localize.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "",
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-hide",
+      "propertyName": "Hide",
+      "propertySetterName": "setHide",
+      "propertyGetterName": "getHide",
+      "displayName": "Hide",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 25,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "StringSetData",
+      "description": "TRUE: the control is collapsed (takes no space) and cannot be edited.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
+    },
+    {
+      "name": "data-tchmi-text",
+      "propertyName": "Text",
+      "propertySetterName": "setText",
+      "propertyGetterName": "getText",
+      "displayName": "Text",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/String",
+      "category": "StringSetData",
+      "description": "Description on the left, also the keyboard title.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": null,
+      "defaultValueInternal": ""
+    },
+    {
+      "name": "data-tchmi-reject-special-characters",
+      "propertyName": "RejectSpecialCharacters",
+      "propertySetterName": "setRejectSpecialCharacters",
+      "propertyGetterName": "getRejectSpecialCharacters",
+      "displayName": "RejectSpecialCharacters",
+      "visible": true,
+      "themeable": "None",
+      "displayPriority": 60,
+      "type": "tchmi:general#/definitions/Boolean",
+      "category": "StringSetData",
+      "description": "TRUE: only A-Z a-z 0-9 _ - . and space can be entered (safe for file and recipe names).",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": false,
+      "defaultValueInternal": false
+    },
+    {
+      "name": "data-tchmi-string-width",
+      "propertyName": "StringWidth",
+      "propertySetterName": "setStringWidth",
+      "propertyGetterName": "getStringWidth",
+      "displayName": "StringWidth",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 5,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "StringSetData Layout",
+      "description": "Width of the value box. Default 180 px, the same as NumericSetData. In %: share of the control width. Widen it for long strings.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 180,
+      "defaultValueInternal": 180
+    },
+    {
+      "name": "data-tchmi-string-width-unit",
+      "propertyName": "StringWidthUnit",
+      "propertySetterName": "setStringWidthUnit",
+      "propertyGetterName": "getStringWidthUnit",
+      "refTo": "StringWidth",
+      "displayName": "StringWidthUnit",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:framework#/definitions/MeasurementUnit",
+      "category": "StringSetData Layout",
+      "description": "Could be 'px' or for relative sizing '%'.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "px",
+      "defaultValueInternal": "px"
+    },
+    {
+      "name": "data-tchmi-text-width",
+      "propertyName": "TextWidth",
+      "propertySetterName": "setTextWidth",
+      "propertyGetterName": "getTextWidth",
+      "displayName": "TextWidth",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 15,
+      "type": "tchmi:framework#/definitions/MeasurementValue",
+      "category": "StringSetData Layout",
+      "description": "Width of the text on the left. The value box is placed in the remaining width. In %: share of the control width minus the value box, so 100% leaves exactly the box.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": 100,
+      "defaultValueInternal": 100
+    },
+    {
+      "name": "data-tchmi-text-width-unit",
+      "propertyName": "TextWidthUnit",
+      "propertySetterName": "setTextWidthUnit",
+      "propertyGetterName": "getTextWidthUnit",
+      "refTo": "TextWidth",
+      "displayName": "TextWidthUnit",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 20,
+      "type": "tchmi:framework#/definitions/MeasurementUnit",
+      "category": "StringSetData Layout",
+      "description": "Could be 'px' or for relative sizing '%'.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%",
+      "defaultValueInternal": "%"
+    },
+    {
+      "name": "data-tchmi-text-alignment",
+      "propertyName": "TextAlignment",
+      "propertySetterName": "setTextAlignment",
+      "propertyGetterName": "getTextAlignment",
+      "displayName": "TextAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 25,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "StringSetData Layout",
+      "description": "Horizontal alignment of the text within TextWidth.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Left",
+      "defaultValueInternal": "Left"
+    },
+    {
+      "name": "data-tchmi-set-data-alignment",
+      "propertyName": "SetDataAlignment",
+      "propertySetterName": "setSetDataAlignment",
+      "propertyGetterName": "getSetDataAlignment",
+      "displayName": "SetDataAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 30,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "StringSetData Layout",
+      "description": "Horizontal alignment of the value box in the width left of the text.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Right",
+      "defaultValueInternal": "Right"
+    },
+    {
+      "name": "data-tchmi-string-alignment",
+      "propertyName": "StringAlignment",
+      "propertySetterName": "setStringAlignment",
+      "propertyGetterName": "getStringAlignment",
+      "displayName": "StringAlignment",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 35,
+      "type": "tchmi:framework#/definitions/HorizontalAlignment",
+      "category": "StringSetData Layout",
+      "description": "Horizontal alignment of the string inside the value box. Center like NumericSetData; Left reads better for long strings.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "Center",
+      "defaultValueInternal": "Center"
+    },
+    {
+      "name": "data-tchmi-current-label",
+      "propertyName": "CurrentLabel",
+      "propertySetterName": "setCurrentLabel",
+      "propertyGetterName": "getCurrentLabel",
+      "displayName": "CurrentLabel",
+      "visible": true,
+      "themeable": "Standard",
+      "displayPriority": 10,
+      "type": "tchmi:general#/definitions/String",
+      "category": "Keyboard",
+      "description": "Keyboard label of the value before editing. Default %l%CURRENT%/l%: the project localization text of the key CURRENT, or CURRENT if the project has none. A literal text or a %l%...%/l% binding replaces it.",
+      "readOnly": false,
+      "bindable": true,
+      "defaultBindingMode": "OneWay",
+      "heritable": true,
+      "defaultValue": "%l%CURRENT%/l%",
+      "defaultValueInternal": "%l%CURRENT%/l%"
+    }
+  ],
+  "attributeCategories": [
+    {
+      "name": "StringSetData",
+      "displayPriority": 50,
+      "defaultCollapsed": false,
+      "description": "Value and look of the set data."
+    },
+    {
+      "name": "StringSetData Layout",
+      "displayPriority": 60,
+      "defaultCollapsed": false,
+      "description": "Widths, alignments and sizes of the StringSetData parts."
+    },
+    {
+      "name": "Keyboard",
+      "displayPriority": 500,
+      "defaultCollapsed": true,
+      "description": "Texts of the keyboard."
+    }
+  ],
+  "functions": [],
+  "events": [
+    {
+      "name": ".onValueWritten",
+      "displayName": ".onValueWritten",
+      "visible": true,
+      "displayPriority": 10,
+      "category": "Control",
+      "description": "Fired after the keyboard wrote a new string.",
+      "heritable": true
+    }
+  ],
+  "dataTypes": [
+    {
+      "schema": "Schema/Types.Schema.json"
+    }
+  ]
+}

@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # TcXaeShell Solution File, Format Version 11.00
 VisualStudioVersion = 15.0.28307.1300
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{3B740506-4966-4147-AB1F-357FE08946EA}") = "AT_SetDataControl", "AT_SetDataControl\AT_SetDataControl.hmiextproj", "{2B54CCE1-93D1-4DB3-8C15-1EFA67AF2C2D}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|TwinCAT HMI = Debug|TwinCAT HMI
+		Release|TwinCAT HMI = Release|TwinCAT HMI
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B54CCE1-93D1-4DB3-8C15-1EFA67AF2C2D}.Debug|TwinCAT HMI.ActiveCfg = Debug|TwinCAT HMI
+		{2B54CCE1-93D1-4DB3-8C15-1EFA67AF2C2D}.Debug|TwinCAT HMI.Build.0 = Debug|TwinCAT HMI
+		{2B54CCE1-93D1-4DB3-8C15-1EFA67AF2C2D}.Release|TwinCAT HMI.ActiveCfg = Release|TwinCAT HMI
+		{2B54CCE1-93D1-4DB3-8C15-1EFA67AF2C2D}.Release|TwinCAT HMI.Build.0 = Release|TwinCAT HMI
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

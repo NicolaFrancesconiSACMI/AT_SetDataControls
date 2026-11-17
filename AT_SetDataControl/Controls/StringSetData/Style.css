@@ -1,0 +1,465 @@
+/*
+ * StringSetData: layout only. Every colour is a variable set in Themes/<Theme>/Style.css.
+ * The keyboard (.sdf-akb) and the lock hint (.sdf-ssd-tip) live in the TopMostLayer, outside the control.
+ * Own prefixes (sdf-ssd-, sdf-akb-): the rules of the other SetDataFramework controls are loaded too.
+ */
+
+.TcHmi_Controls_SetDataFramework_StringSetData {
+    overflow: hidden;
+}
+
+/* Touch on Chromium: no grey tap-highlight rectangle behind what is tapped (it ignores the rounded corners).
+   The control and its popups already show their own pressed state. */
+.TcHmi_Controls_SetDataFramework_StringSetData,
+.sdf-akb,
+.sdf-ssd-tip {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide = TRUE: collapsed, without touching the Visibility attribute */
+.TcHmi_Controls_SetDataFramework_StringSetData.sdf-ssd-hidden {
+    display: none !important;
+}
+
+.TcHmi_Controls_SetDataFramework_StringSetData-Template {
+    /* Same box as the NumericSetData value box by default. StringWidth overrides the box width inline;
+       in px this variable follows it, for TextWidth in %: 100% = control width - box width - gap (StringSetData.ts) */
+    --sdf-ssd-box-width: 180px;
+    --sdf-ssd-gap: 4px; /* text right + value box left must not touch */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    column-gap: var(--sdf-ssd-gap);
+    font-family: inherit;
+}
+
+/* Width (TextWidth) and horizontal alignment (TextAlignment) are set inline */
+.sdf-ssd-text {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    color: var(--sdf-ssd-text-color);
+    font-size: 16px;
+    line-height: 1.15;
+    overflow: hidden;
+    overflow-wrap: initial;
+}
+
+/* Remaining width; places the value box (SetDataAlignment, inline) and centres it vertically */
+.sdf-ssd-slot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* StringWidth x 40 (width and flex-basis inline), shrinks only when the control is too small */
+.sdf-ssd-valuebox {
+    flex: 0 1 var(--sdf-ssd-box-width);
+    width: var(--sdf-ssd-box-width);
+    height: 40px;
+    max-height: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    /* Outlined input: thin border + accent line at the bottom = "this can be set" */
+    border: 1px solid var(--sdf-ssd-border);
+    border-radius: 8px;
+    background: var(--sdf-ssd-background);
+    box-shadow: inset 0 -2px 0 var(--sdf-ssd-accent);
+    color: var(--sdf-ssd-value-color);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: pre; /* leading / repeated spaces of the string stay visible */
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+/* Mouse only: touch screens would keep the hover after a tap */
+@media (hover: hover) {
+    .sdf-ssd-valuebox:hover {
+        border-color: var(--sdf-ssd-border-hover);
+    }
+}
+
+.sdf-ssd-valuebox:active {
+    border-color: var(--sdf-ssd-accent);
+    background: var(--sdf-ssd-background-pressed);
+    box-shadow: inset 0 0 0 1px var(--sdf-ssd-accent);
+}
+
+/* The string in the space left of the icon; horizontal alignment (StringAlignment) inline */
+.sdf-ssd-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/* All icons sit on the right, after the string, one at a time: edit, lock, lock with "i" or user lock.
+   Each takes the same 18 px, so the string does not move when the state changes. */
+.sdf-ssd-lock,
+.sdf-ssd-lockinfo,
+.sdf-ssd-userlock {
+    display: none;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--sdf-ssd-lock-color);
+}
+
+/* Edit affordance: 16 px drawing + 1 px each side = the 18 px of the lock icons */
+.sdf-ssd-edit {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin: 0 1px;
+    color: var(--sdf-ssd-accent);
+}
+
+/* Lock = TRUE: same box without the accent line (no longer looks like a button),
+   lock icon instead of the edit icon, no press feedback */
+.sdf-ssd-locked .sdf-ssd-valuebox,
+.sdf-ssd-locked .sdf-ssd-valuebox:hover,
+.sdf-ssd-locked .sdf-ssd-valuebox:active {
+    background: var(--sdf-ssd-background);
+    border-color: var(--sdf-ssd-border);
+    box-shadow: none;
+    cursor: default;
+}
+
+/* Lock with a LockDescription: a tap shows the description */
+.sdf-ssd-has-hint .sdf-ssd-valuebox,
+.sdf-ssd-has-hint .sdf-ssd-valuebox:hover,
+.sdf-ssd-has-hint .sdf-ssd-valuebox:active {
+    cursor: pointer;
+}
+
+/* Lock with an "i" badge instead of the plain lock, in the same 18 px on the right so the string does not move.
+   The frame is an outline: it takes no space and reads as "press me".
+   Both classes in the selector: it must beat ".sdf-ssd-locked .sdf-ssd-lock", which comes further down. */
+.sdf-ssd-locked.sdf-ssd-has-hint .sdf-ssd-lock {
+    display: none;
+}
+
+.sdf-ssd-has-hint .sdf-ssd-lockinfo {
+    display: block;
+    color: var(--sdf-ssd-accent);
+    outline: 1.5px solid var(--sdf-ssd-accent);
+    outline-offset: 2px;
+    border-radius: 5px;
+    transition: background-color 0.15s;
+}
+
+.sdf-ssd-has-hint .sdf-ssd-valuebox:active .sdf-ssd-lockinfo {
+    background-color: var(--sdf-ssd-background-pressed);
+}
+
+.sdf-ssd-locked .sdf-ssd-lock {
+    display: block;
+}
+
+.sdf-ssd-locked .sdf-ssd-edit {
+    display: none;
+}
+
+/* No "operate" right for the logged-in user (class kept up to date by the framework on login/logout):
+   same box as Lock, user lock icon. Wins over Lock: locked and not allowed shows only the user lock. */
+.TcHmi_Controls_SetDataFramework_StringSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-ssd-valuebox,
+.TcHmi_Controls_SetDataFramework_StringSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-ssd-valuebox:hover,
+.TcHmi_Controls_SetDataFramework_StringSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-ssd-valuebox:active {
+    background: var(--sdf-ssd-background);
+    border-color: var(--sdf-ssd-border);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.TcHmi_Controls_SetDataFramework_StringSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-ssd-userlock {
+    display: block;
+}
+
+.TcHmi_Controls_SetDataFramework_StringSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-ssd-lock,
+.TcHmi_Controls_SetDataFramework_StringSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-ssd-lockinfo,
+.TcHmi_Controls_SetDataFramework_StringSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-ssd-edit {
+    display: none;
+}
+
+/* ---------- lock hint ---------- */
+
+/* Bubble above the value box (.sdf-ssd-tip-below: under it); --sdf-tip-arrow-x is set by the control */
+.sdf-ssd-tip {
+    max-width: 280px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid var(--sdf-tip-border, #1f2933);
+    border-radius: 8px;
+    background-color: var(--sdf-tip-background, #1f2933);
+    color: var(--sdf-tip-text, #ffffff);
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.24);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sdf-ssd-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--sdf-tip-arrow-x, 50%);
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: var(--sdf-tip-background, #1f2933);
+}
+
+.sdf-ssd-tip.sdf-ssd-tip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--sdf-tip-background, #1f2933);
+}
+
+/* ---------- keyboard ---------- */
+
+.sdf-akb {
+    width: 920px;
+    height: 500px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sdf-akb-panel, #f4f6f8);
+    color: var(--sdf-akb-text, #1f2933);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.28), 0 2px 6px rgba(16, 24, 40, 0.12);
+    font-family: inherit;
+    /* Repeated taps must not select text or zoom; only the value box is selectable */
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.sdf-akb button {
+    font: inherit;
+    color: inherit;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sdf-akb-title {
+    flex: 0 0 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px 0 40px;
+    position: relative;
+    background-color: var(--sdf-akb-surface, #ffffff);
+    box-shadow: inset 0 -1px 0 var(--sdf-akb-line, #d5dbe1);
+    cursor: move;
+    touch-action: none; /* the drag must not scroll or zoom */
+}
+
+/* grip dots: this bar drags the keyboard */
+.sdf-akb-title::before {
+    content: "\2807\2807";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    letter-spacing: -6px;
+    color: var(--sdf-akb-text-2, #6b7785);
+    pointer-events: none;
+}
+
+.sdf-akb-title-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdf-akb-close {
+    flex: 0 0 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 20px !important;
+    background: transparent;
+}
+
+.sdf-akb-close.down {
+    background-color: var(--sdf-akb-surface-down, #e3e8ed);
+}
+
+.sdf-akb-value {
+    flex: 0 0 56px;
+    margin: 12px 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px 0 12px;
+    border-radius: 10px;
+    background-color: var(--sdf-akb-surface, #ffffff);
+    box-shadow: inset 0 0 0 1px var(--sdf-akb-line, #d5dbe1);
+}
+
+.sdf-akb-value:focus-within {
+    box-shadow: inset 0 0 0 2px var(--sdf-akb-accent, #1f6fb2);
+}
+
+/* The theme styles every <input> (and its :focus): the inner field must stay invisible,
+   only .sdf-akb-value draws the box and its focus ring. */
+.sdf-akb .sdf-akb-input,
+.sdf-akb .sdf-akb-input:focus,
+.sdf-akb .sdf-akb-input:focus-visible,
+.sdf-akb .sdf-akb-input:hover {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+.sdf-akb-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    font-size: 26px;
+    text-align: left;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.sdf-akb-count {
+    flex: 0 0 auto;
+    font-size: 14px;
+    color: var(--sdf-akb-text-2, #6b7785);
+    pointer-events: none;
+}
+
+.sdf-akb-current {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 24px 2px;
+    min-width: 0;
+    white-space: pre;
+}
+
+.sdf-akb-label {
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--sdf-akb-text-2, #6b7785);
+}
+
+.sdf-akb-current-text {
+    font-size: 14px;
+    min-height: 1.2em;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 12 columns, 5 rows. ✓ is two columns wide and two rows tall (Enter position). */
+.sdf-akb-keys {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 6px;
+    padding: 8px 12px 12px;
+}
+
+.sdf-akb-key {
+    border-radius: 10px;
+    font-size: 22px !important;
+    background-color: var(--sdf-akb-surface, #ffffff) !important;
+    box-shadow: inset 0 0 0 1px var(--sdf-akb-line, #d5dbe1), 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+.sdf-akb-key.sdf-akb-func {
+    font-size: 18px !important;
+    background-color: var(--sdf-akb-func, #e9edf1) !important;
+}
+
+.sdf-akb-key.down {
+    background-color: var(--sdf-akb-surface-down, #e3e8ed) !important;
+    box-shadow: inset 0 0 0 1px var(--sdf-akb-line, #d5dbe1);
+}
+
+.sdf-akb-key[data-key="Backspace"] { grid-column: 11 / span 2; }
+.sdf-akb-key[data-key="Enter"]     { grid-column: 11 / span 2; grid-row: 2 / span 2; }
+.sdf-akb-key[data-key="Shift"]     { grid-column: 1 / span 2; }
+.sdf-akb-key[data-key="Page"]      { grid-column: 1 / span 2; }
+.sdf-akb-key[data-key="Space"]     { grid-column: 4 / span 6; }
+.sdf-akb-key[data-key="Clear"]     { grid-column: 11 / span 2; }
+
+.sdf-akb-key.sdf-akb-key-accent {
+    font-size: 30px !important;
+    background-color: var(--sdf-akb-accent, #1f6fb2) !important;
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.16);
+}
+
+.sdf-akb-key.sdf-akb-key-accent.down {
+    background-color: var(--sdf-akb-accent-down, #185a91) !important;
+    box-shadow: none;
+}
+
+/* ⇧ once: outlined in the accent colour; caps lock: filled */
+.sdf-akb-shift-once [data-key="Shift"] {
+    box-shadow: inset 0 0 0 2px var(--sdf-akb-accent, #1f6fb2);
+    color: var(--sdf-akb-accent, #1f6fb2);
+}
+
+.sdf-akb-shift-lock [data-key="Shift"] {
+    background-color: var(--sdf-akb-accent, #1f6fb2) !important;
+    color: #ffffff;
+}
+
+/* RejectSpecialCharacters: keys of blocked characters */
+.sdf-akb-key.sdf-akb-key-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+/* ---------- error: write failed / too long. Removed on the next edit ---------- */
+@keyframes sdf-akb-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+.sdf-akb-error,
+.sdf-akb-error * {
+    color: var(--sdf-akb-error, #dc0000) !important;
+}
+
+.sdf-akb-value.sdf-akb-error {
+    box-shadow: inset 0 0 0 2px var(--sdf-akb-error, #dc0000) !important;
+}
+
+.sdf-akb-error {
+    animation: sdf-akb-blink 0.8s steps(1, end) infinite;
+}

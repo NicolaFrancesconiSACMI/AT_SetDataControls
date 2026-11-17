@@ -1,0 +1,42 @@
+/** Styles for theme: Base-Dark */
+/* OFF: grey keycap with a darker lip (no blue). Toggle ON: cyan glass bulb glowing on the dark screen, also when locked. */
+.TcHmi_Controls_SetDataFramework_ButtonSetData,
+.sdf-btncf {
+    --sdf-btn-side-text-color: #e6e9ed;
+    --sdf-btn-background: #4a5663;
+    --sdf-btn-background-hover: #55626f;
+    --sdf-btn-background-pressed: #3e4955;
+    --sdf-btn-border: #5b6875;
+    --sdf-btn-edge: #303942;
+    --sdf-btn-text-color: #f2f4f6;
+    --sdf-btn-shadow: rgba(0, 0, 0, 0.45);
+    --sdf-btn-glass-core: #e9fdff;
+    --sdf-btn-glass-mid: #84e4f6;
+    --sdf-btn-glass-rim: #3cbfdc;
+    --sdf-btn-glass-line: #7fe3f5;
+    --sdf-btn-glass-glow: rgba(64, 208, 240, 0.6);
+    --sdf-btn-glass-highlight: rgba(255, 255, 255, 0.7);
+    --sdf-btn-glass-text: #04343f;
+    --sdf-btn-lock-color: #c3ccd5; /* on the grey #4a5663 body */
+    --sdf-btn-accent: #3a8fd6;
+    --sdf-btn-error: #ff4d4d;
+}
+
+.sdf-btncf {
+    --sdf-btncf-panel: #1e2328;
+    --sdf-btncf-surface: #2b3238;
+    --sdf-btncf-surface-down: #3a434c;
+    --sdf-btncf-func: #353d44;
+    --sdf-btncf-line: #424b54;
+    --sdf-btncf-text: #e6e9ed;
+    --sdf-btncf-text-2: #9aa5b1;
+    --sdf-btncf-accent: #3a8fd6;
+    --sdf-btncf-accent-down: #2c75b3;
+}
+
+/* Lock hint: light bubble, stands out on the dark screen */
+.sdf-btn-tip {
+    --sdf-tip-background: #e6e9ed;
+    --sdf-tip-border: #e6e9ed;
+    --sdf-tip-text: #1f2933;
+}

@@ -1,0 +1,353 @@
+/*
+ * ComboboxSetData: layout only. Every colour is a variable set in Themes/<Theme>/Style.css.
+ * The drop down list (.sdf-cdd) and the lock hint (.sdf-csd-tip) live in the TopMostLayer, outside the control.
+ * Own prefixes (sdf-csd-, sdf-cdd-): the rules of the other SetDataFramework controls are loaded too.
+ */
+
+.TcHmi_Controls_SetDataFramework_ComboboxSetData {
+    overflow: hidden;
+}
+
+/* Touch on Chromium: no grey tap-highlight rectangle behind what is tapped (it ignores the rounded corners).
+   The control and its popups already show their own pressed state. */
+.TcHmi_Controls_SetDataFramework_ComboboxSetData,
+.sdf-cdd,
+.sdf-csd-tip {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide = TRUE: collapsed, without touching the Visibility attribute */
+.TcHmi_Controls_SetDataFramework_ComboboxSetData.sdf-csd-hidden {
+    display: none !important;
+}
+
+.TcHmi_Controls_SetDataFramework_ComboboxSetData-Template {
+    /* Same box as the NumericSetData value box by default. ComboboxWidth overrides the box width inline;
+       in px this variable follows it, for TextWidth in %: 100% = control width - box width - gap (ComboboxSetData.ts) */
+    --sdf-csd-box-width: 180px;
+    --sdf-csd-gap: 4px; /* text right + value box left must not touch */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    column-gap: var(--sdf-csd-gap);
+    font-family: inherit;
+}
+
+/* Width (TextWidth) and horizontal alignment (TextAlignment) are set inline */
+.sdf-csd-text {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    color: var(--sdf-csd-text-color);
+    font-size: 16px;
+    line-height: 1.15;
+    overflow: hidden;
+    overflow-wrap: initial;
+}
+
+/* Remaining width; places the value box (SetDataAlignment, inline) and centres it vertically */
+.sdf-csd-slot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* ComboboxWidth x 40 (width and flex-basis inline), shrinks only when the control is too small */
+.sdf-csd-valuebox {
+    flex: 0 1 var(--sdf-csd-box-width);
+    width: var(--sdf-csd-box-width);
+    height: 40px;
+    max-height: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    /* Outlined input: thin border + accent line at the bottom = "this can be set" */
+    border: 1px solid var(--sdf-csd-border);
+    border-radius: 8px;
+    background: var(--sdf-csd-background);
+    box-shadow: inset 0 -2px 0 var(--sdf-csd-accent);
+    color: var(--sdf-csd-value-color);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+/* Mouse only: touch screens would keep the hover after a tap */
+@media (hover: hover) {
+    .sdf-csd-valuebox:hover {
+        border-color: var(--sdf-csd-border-hover);
+    }
+}
+
+/* Pressed, and while the list is open */
+.sdf-csd-valuebox:active,
+.sdf-csd-open .sdf-csd-valuebox {
+    border-color: var(--sdf-csd-accent);
+    background: var(--sdf-csd-background-pressed);
+    box-shadow: inset 0 0 0 1px var(--sdf-csd-accent);
+}
+
+/* The selected text in the space left of the icon; horizontal alignment (ValueAlignment) inline */
+.sdf-csd-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/* Nothing selected: ComboboxText, greyed */
+.sdf-csd-placeholder .sdf-csd-value {
+    color: var(--sdf-csd-lock-color);
+    font-weight: 400;
+}
+
+/* All icons sit on the right, after the selected text, one at a time: arrow, lock, lock with "i" or user lock.
+   Each takes the same 18 px, so the text does not move when the state changes. */
+.sdf-csd-lock,
+.sdf-csd-lockinfo,
+.sdf-csd-userlock {
+    display: none;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--sdf-csd-lock-color);
+}
+
+/* Drop down affordance (the pen of NumericSetData), turned up while the list is open.
+   16 px drawing + 1 px each side = the 18 px of the lock icons */
+.sdf-csd-arrow {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin: 0 1px;
+    color: var(--sdf-csd-accent);
+    transition: transform 0.15s;
+}
+
+.sdf-csd-open .sdf-csd-arrow {
+    transform: rotate(180deg);
+}
+
+/* Lock = TRUE: same box without the accent line (no longer looks like a button),
+   lock icon instead of the arrow, no press feedback */
+.sdf-csd-locked .sdf-csd-valuebox,
+.sdf-csd-locked .sdf-csd-valuebox:hover,
+.sdf-csd-locked .sdf-csd-valuebox:active {
+    background: var(--sdf-csd-background);
+    border-color: var(--sdf-csd-border);
+    box-shadow: none;
+    cursor: default;
+}
+
+/* Lock with a LockDescription: a tap shows the description */
+.sdf-csd-has-hint .sdf-csd-valuebox,
+.sdf-csd-has-hint .sdf-csd-valuebox:hover,
+.sdf-csd-has-hint .sdf-csd-valuebox:active {
+    cursor: pointer;
+}
+
+/* Lock with an "i" badge instead of the plain lock, in the same 18 px on the right so the text does not move.
+   Both classes in the selector: it must beat ".sdf-csd-locked .sdf-csd-lock", which comes further down. */
+.sdf-csd-locked.sdf-csd-has-hint .sdf-csd-lock {
+    display: none;
+}
+
+.sdf-csd-has-hint .sdf-csd-lockinfo {
+    display: block;
+    color: var(--sdf-csd-accent);
+    outline: 1.5px solid var(--sdf-csd-accent);
+    outline-offset: 2px;
+    border-radius: 5px;
+    transition: background-color 0.15s;
+}
+
+.sdf-csd-has-hint .sdf-csd-valuebox:active .sdf-csd-lockinfo {
+    background-color: var(--sdf-csd-background-pressed);
+}
+
+.sdf-csd-locked .sdf-csd-lock {
+    display: block;
+}
+
+.sdf-csd-locked .sdf-csd-arrow {
+    display: none;
+}
+
+/* No "operate" right for the logged-in user (class kept up to date by the framework on login/logout):
+   same box as Lock, user lock icon. Wins over Lock: locked and not allowed shows only the user lock. */
+.TcHmi_Controls_SetDataFramework_ComboboxSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-csd-valuebox,
+.TcHmi_Controls_SetDataFramework_ComboboxSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-csd-valuebox:hover,
+.TcHmi_Controls_SetDataFramework_ComboboxSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-csd-valuebox:active {
+    background: var(--sdf-csd-background);
+    border-color: var(--sdf-csd-border);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.TcHmi_Controls_SetDataFramework_ComboboxSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-csd-userlock {
+    display: block;
+}
+
+.TcHmi_Controls_SetDataFramework_ComboboxSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-csd-lock,
+.TcHmi_Controls_SetDataFramework_ComboboxSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-csd-lockinfo,
+.TcHmi_Controls_SetDataFramework_ComboboxSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-csd-arrow {
+    display: none;
+}
+
+/* Write failed: blinks three times */
+@keyframes sdf-csd-blink {
+    0%, 100% { box-shadow: inset 0 0 0 2px var(--sdf-csd-error); }
+    50% { box-shadow: none; }
+}
+
+.sdf-csd-valuebox.sdf-csd-error {
+    border-color: var(--sdf-csd-error);
+    animation: sdf-csd-blink 0.8s steps(1, end) 3;
+}
+
+/* ---------- lock hint ---------- */
+
+/* Bubble above the value box (.sdf-csd-tip-below: under it); --sdf-tip-arrow-x is set by the control */
+.sdf-csd-tip {
+    max-width: 280px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid var(--sdf-tip-border, #1f2933);
+    border-radius: 8px;
+    background-color: var(--sdf-tip-background, #1f2933);
+    color: var(--sdf-tip-text, #ffffff);
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.24);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sdf-csd-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--sdf-tip-arrow-x, 50%);
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: var(--sdf-tip-background, #1f2933);
+}
+
+.sdf-csd-tip.sdf-csd-tip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--sdf-tip-background, #1f2933);
+}
+
+/* ---------- drop down list ---------- */
+
+/* Under the value box (above when there is no room); position, width and max-height are set by the control */
+.sdf-cdd {
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0;
+    border: 1px solid var(--sdf-cdd-line, #d5dbe1);
+    border-radius: 8px;
+    background-color: var(--sdf-cdd-surface, #ffffff);
+    color: var(--sdf-cdd-text, #1f2933);
+    font-size: 15px;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.28), 0 2px 6px rgba(16, 24, 40, 0.12);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+}
+
+/* One entry: 40 px like the value box, check mark on the selected one */
+.sdf-cdd-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.sdf-cdd-item-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdf-cdd-check {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    visibility: hidden;
+    color: var(--sdf-cdd-accent, #1f6fb2);
+}
+
+.sdf-cdd-item.down {
+    background-color: var(--sdf-cdd-surface-down, #e3e8ed);
+}
+
+.sdf-cdd-item.sdf-cdd-selected {
+    background-color: var(--sdf-cdd-selected, #eaf2fa);
+    color: var(--sdf-cdd-accent, #1f6fb2);
+    font-weight: 600;
+}
+
+.sdf-cdd-item.sdf-cdd-selected .sdf-cdd-check {
+    visibility: visible;
+}
+
+/* Entry under a category label: indented */
+.sdf-cdd-item.sdf-cdd-grouped {
+    padding-left: 28px;
+}
+
+/* Category label above its group of entries (each category once, entries without a category after all groups) */
+.sdf-cdd-category {
+    padding: 10px 12px 4px;
+    color: var(--sdf-cdd-text-2, #6b7785);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdf-cdd-category ~ .sdf-cdd-category {
+    border-top: 1px solid var(--sdf-cdd-line, #d5dbe1);
+    margin-top: 4px;
+}
+
+/* Line between the last category group and the entries without a category */
+.sdf-cdd-separator {
+    height: 0;
+    border-top: 1px solid var(--sdf-cdd-line, #d5dbe1);
+    margin: 4px 0;
+}
+
+.sdf-cdd-empty {
+    padding: 10px 12px;
+    color: var(--sdf-cdd-text-2, #6b7785);
+    font-style: italic;
+}

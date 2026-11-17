@@ -1,0 +1,31 @@
+/** Styles for theme: Base */
+/* Same palette as NumericSetData: white value box, steel-blue accent line. */
+.TcHmi_Controls_SetDataFramework_ComboboxSetData {
+    --sdf-csd-text-color: #1f2933;
+    --sdf-csd-value-color: #1f2933;
+    --sdf-csd-background: #ffffff;
+    --sdf-csd-background-pressed: #eaf2fa;
+    --sdf-csd-border: #c3ccd5;
+    --sdf-csd-border-hover: #8a96a3;
+    --sdf-csd-accent: #1f6fb2;
+    --sdf-csd-lock-color: #6b7785;
+    --sdf-csd-error: #dc0000;
+}
+
+/* Drop down list: same palette as the NumericSetData keypad and the StringSetData keyboard */
+.sdf-cdd {
+    --sdf-cdd-surface: #ffffff;
+    --sdf-cdd-surface-down: #e3e8ed;
+    --sdf-cdd-selected: #eaf2fa;
+    --sdf-cdd-line: #d5dbe1;
+    --sdf-cdd-text: #1f2933;
+    --sdf-cdd-text-2: #6b7785;
+    --sdf-cdd-accent: #1f6fb2;
+}
+
+/* Lock hint: dark bubble, stands out on the light screen */
+.sdf-csd-tip {
+    --sdf-tip-background: #1f2933;
+    --sdf-tip-border: #1f2933;
+    --sdf-tip-text: #ffffff;
+}

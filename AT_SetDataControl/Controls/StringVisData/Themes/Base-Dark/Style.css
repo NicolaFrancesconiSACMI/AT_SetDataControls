@@ -1,0 +1,12 @@
+/** Styles for theme: Base-Dark */
+/* State colours (names in the States list): lighter shades that read on the dark box. */
+.TcHmi_Controls_SetDataFramework_StringVisData {
+    --sdf-svd-text-color: #e6e9ed;
+    --sdf-svd-value-color: #e6e9ed;
+    --sdf-svd-background: #1b2025;
+    --sdf-svd-border: #3a434c;
+    --sdf-svd-red: #ff5c5c;
+    --sdf-svd-blue: #5aa9e6;
+    --sdf-svd-green: #4ade80;
+    --sdf-svd-orange: #fb9a3c;
+}

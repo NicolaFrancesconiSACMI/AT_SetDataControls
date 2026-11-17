@@ -1,0 +1,424 @@
+/*
+ * BooleanSetData: layout only. Every colour is a variable set in Themes/<Theme>/Style.css.
+ * The confirm dialog (.sdf-bcf) and the lock hint (.sdf-bsd-tip) live in the TopMostLayer, outside the control.
+ * Own prefixes (sdf-bsd-, sdf-bcf-): the rules of the other SetDataFramework controls are loaded too.
+ */
+
+.TcHmi_Controls_SetDataFramework_BooleanSetData {
+    overflow: hidden;
+}
+
+/* Touch on Chromium: no grey tap-highlight rectangle behind what is tapped (it ignores the rounded corners).
+   The control and its popups already show their own pressed state. */
+.TcHmi_Controls_SetDataFramework_BooleanSetData,
+.sdf-bcf,
+.sdf-bsd-tip {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide = TRUE: collapsed, without touching the Visibility attribute */
+.TcHmi_Controls_SetDataFramework_BooleanSetData.sdf-bsd-hidden {
+    display: none !important;
+}
+
+.TcHmi_Controls_SetDataFramework_BooleanSetData-Template {
+    /* Switch width. Also used by TextWidth in %: 100% = control width - box width - gap (BooleanSetData.ts) */
+    --sdf-bsd-box-width: 120px;
+    --sdf-bsd-gap: 4px; /* text right + switch left must not touch */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    column-gap: var(--sdf-bsd-gap);
+    font-family: inherit;
+}
+
+/* Width (TextWidth) and horizontal alignment (TextAlignment) are set inline */
+.sdf-bsd-text {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    color: var(--sdf-bsd-text-color);
+    font-size: 16px;
+    line-height: 1.15;
+    overflow: hidden;
+    overflow-wrap: initial;
+}
+
+/* Remaining width; places the switch (ToggleAlignment, inline) and centres it vertically */
+.sdf-bsd-slot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* The track: fixed --sdf-bsd-box-width x 34 (fits a 40 px control with some air), shrinks only when the control is too small.
+   Pill shape; OFF = light grey, ON = accent-blue gradient. */
+.sdf-bsd-switch {
+    flex: 0 1 var(--sdf-bsd-box-width);
+    width: var(--sdf-bsd-box-width);
+    height: 34px;
+    max-height: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--sdf-bsd-border);
+    border-radius: 999px;
+    background: var(--sdf-bsd-off);
+    color: var(--sdf-bsd-off-text);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+/* Mouse only: touch screens would keep the hover after a tap */
+@media (hover: hover) {
+    .sdf-bsd-switch:hover {
+        border-color: var(--sdf-bsd-border-hover);
+    }
+}
+
+.sdf-bsd-switch:active {
+    filter: brightness(0.94);
+}
+
+.sdf-bsd-on .sdf-bsd-switch,
+.sdf-bsd-on .sdf-bsd-switch:hover {
+    background: var(--sdf-bsd-on);
+    border-color: var(--sdf-bsd-on-border);
+    color: var(--sdf-bsd-on-text);
+}
+
+/* Room for the knob (4 px gap + 26 px knob): before the label when OFF, after it when ON */
+.sdf-bsd-space {
+    display: none;
+    flex: 0 0 30px;
+}
+
+.sdf-bsd-on .sdf-bsd-space,
+.sdf-bsd-off .sdf-bsd-space {
+    display: block;
+}
+
+.sdf-bsd-on .sdf-bsd-space {
+    order: 2;
+}
+
+.sdf-bsd-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 8px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Knob: fixed 26 px circle (the 18 px icons are never scaled), centred in the 34 px inner track.
+   Solid white, left when OFF, right when ON, absent when the value is unknown.
+   Editable: blue shade under the knob, the same "you can change this" sign as the NumericSetData accent line.
+   --sdf-bsd-knob-fill / -icon are also read by the icons inside (cut-outs, lock colour): keep them solid colours. */
+.sdf-bsd-knob {
+    --sdf-bsd-knob-fill: var(--sdf-bsd-knob-off);
+    --sdf-bsd-knob-icon: var(--sdf-bsd-knob-off-icon);
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: 26px;
+    height: 26px;
+    margin-top: -13px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--sdf-bsd-knob-fill);
+    color: var(--sdf-bsd-knob-icon);
+    box-shadow: inset 0 0 0 0.4px var(--sdf-bsd-border), 0 1.2px 0 var(--sdf-bsd-accent);
+    transform: translateX(0);
+    transition: left 0.15s ease, transform 0.15s ease;
+}
+
+.sdf-bsd-on .sdf-bsd-knob,
+.sdf-bsd-off .sdf-bsd-knob {
+    display: flex;
+}
+
+.sdf-bsd-on .sdf-bsd-knob {
+    --sdf-bsd-knob-fill: var(--sdf-bsd-knob-on);
+    --sdf-bsd-knob-icon: var(--sdf-bsd-knob-on-icon);
+    left: calc(100% - 4px);
+    transform: translateX(-100%);
+    /* The track is already blue: a darker blue keeps the shade visible */
+    box-shadow: 0 2px 0 var(--sdf-bsd-knob-shade-on);
+}
+
+.sdf-bsd-lock,
+.sdf-bsd-lockinfo,
+.sdf-bsd-userlock {
+    display: none;
+    flex: 0 0 18px;
+    width: 18px; /* same size as the NumericSetData lock icons, never shrunk */
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+}
+
+/* Lock = TRUE: the state colour stays (it is the information), lock icon in the knob, no press feedback */
+.sdf-bsd-locked .sdf-bsd-switch,
+.sdf-bsd-locked .sdf-bsd-switch:hover {
+    border-color: var(--sdf-bsd-border);
+    cursor: default;
+}
+
+.sdf-bsd-locked.sdf-bsd-on .sdf-bsd-switch,
+.sdf-bsd-locked.sdf-bsd-on .sdf-bsd-switch:hover {
+    border-color: var(--sdf-bsd-on-border);
+}
+
+.sdf-bsd-locked .sdf-bsd-switch:active {
+    filter: none;
+}
+
+.sdf-bsd-locked .sdf-bsd-lock {
+    display: block;
+}
+
+/* Not editable: plain grey edge instead of the blue ring */
+.sdf-bsd-locked .sdf-bsd-knob {
+    box-shadow: inset 0 0 0 1px var(--sdf-bsd-border), 0 1px 2px rgba(16, 24, 40, 0.2);
+}
+
+/* Lock with a LockDescription: lock with a blue "i" badge, a tap shows the description. Both classes in the selectors: they must beat the plain Lock rules. */
+.sdf-bsd-locked.sdf-bsd-has-hint .sdf-bsd-switch {
+    cursor: pointer;
+}
+
+.sdf-bsd-locked.sdf-bsd-has-hint .sdf-bsd-switch:active {
+    filter: brightness(0.94);
+}
+
+.sdf-bsd-locked.sdf-bsd-has-hint .sdf-bsd-lock {
+    display: none;
+}
+
+.sdf-bsd-locked.sdf-bsd-has-hint .sdf-bsd-lockinfo {
+    display: block;
+    color: var(--sdf-bsd-accent);
+}
+
+/* Accent ring in the knob: "press me" */
+.sdf-bsd-locked.sdf-bsd-has-hint .sdf-bsd-knob {
+    box-shadow: inset 0 0 1px 1px var(--sdf-bsd-accent), 0 0px 0px rgba(16, 24, 40, 0.2);
+}
+
+/* No "operate" right for the logged-in user (class kept up to date by the framework on login/logout):
+   user lock in the knob, no hint. Wins over Lock (four classes in every selector). */
+.TcHmi_Controls_SetDataFramework_BooleanSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-bsd-switch,
+.TcHmi_Controls_SetDataFramework_BooleanSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-bsd-switch:hover {
+    cursor: not-allowed;
+}
+
+.TcHmi_Controls_SetDataFramework_BooleanSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-bsd-switch:active {
+    filter: none;
+}
+
+.TcHmi_Controls_SetDataFramework_BooleanSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-bsd-knob .sdf-bsd-userlock {
+    display: block;
+}
+
+.TcHmi_Controls_SetDataFramework_BooleanSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-bsd-knob .sdf-bsd-lock,
+.TcHmi_Controls_SetDataFramework_BooleanSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-bsd-knob .sdf-bsd-lockinfo {
+    display: none;
+}
+
+.TcHmi_Controls_SetDataFramework_BooleanSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-bsd-switch .sdf-bsd-knob {
+    box-shadow: inset 0 0 0 1px var(--sdf-bsd-border), 0 1px 2px rgba(16, 24, 40, 0.2);
+}
+
+/* Write failed: blinks three times */
+@keyframes sdf-bsd-blink {
+    0%, 100% { box-shadow: inset 0 0 0 2px var(--sdf-bsd-error); }
+    50% { box-shadow: none; }
+}
+
+.sdf-bsd-switch.sdf-bsd-error {
+    border-color: var(--sdf-bsd-error);
+    animation: sdf-bsd-blink 0.8s steps(1, end) 3;
+}
+
+/* ---------- lock hint ---------- */
+
+/* Bubble above the switch (.sdf-bsd-tip-below: under it); --sdf-tip-arrow-x is set by the control */
+.sdf-bsd-tip {
+    max-width: 280px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid var(--sdf-tip-border, #1f2933);
+    border-radius: 8px;
+    background-color: var(--sdf-tip-background, #1f2933);
+    color: var(--sdf-tip-text, #ffffff);
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.24);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sdf-bsd-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--sdf-tip-arrow-x, 50%);
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: var(--sdf-tip-background, #1f2933);
+}
+
+.sdf-bsd-tip.sdf-bsd-tip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--sdf-tip-background, #1f2933);
+}
+
+/* ---------- confirm dialog ---------- */
+
+.sdf-bcf {
+    width: 440px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sdf-bcf-panel, #f4f6f8);
+    color: var(--sdf-bcf-text, #1f2933);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.28), 0 2px 6px rgba(16, 24, 40, 0.12);
+    font-family: inherit;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.sdf-bcf button {
+    font: inherit;
+    color: inherit;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sdf-bcf-title {
+    flex: 0 0 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px 0 20px;
+    background-color: var(--sdf-bcf-surface, #ffffff);
+    box-shadow: inset 0 -1px 0 var(--sdf-bcf-line, #d5dbe1);
+}
+
+.sdf-bcf-title-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdf-bcf-close {
+    flex: 0 0 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 20px !important;
+    background: transparent;
+}
+
+.sdf-bcf-close.down {
+    background-color: var(--sdf-bcf-surface-down, #e3e8ed);
+}
+
+/* current state -> new state */
+.sdf-bcf-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 28px 20px;
+}
+
+.sdf-bcf-pill {
+    min-width: 96px;
+    height: 40px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    border: 1px solid var(--sdf-bsd-border);
+    border-radius: 999px;
+    background: var(--sdf-bsd-off);
+    color: var(--sdf-bsd-off-text);
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sdf-bcf-pill.sdf-bcf-on {
+    background: var(--sdf-bsd-on);
+    border-color: var(--sdf-bsd-on-border);
+    color: var(--sdf-bsd-on-text);
+}
+
+.sdf-bcf-from {
+    opacity: 0.55;
+}
+
+.sdf-bcf-arrow {
+    font-size: 26px;
+    color: var(--sdf-bcf-text-2, #6b7785);
+}
+
+.sdf-bcf-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 12px 12px;
+}
+
+.sdf-bcf-button {
+    height: 56px;
+    border-radius: 10px;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    background-color: var(--sdf-bcf-func, #e9edf1) !important;
+    box-shadow: inset 0 0 0 1px var(--sdf-bcf-line, #d5dbe1), 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+.sdf-bcf-button.down {
+    background-color: var(--sdf-bcf-surface-down, #e3e8ed) !important;
+}
+
+.sdf-bcf-button.sdf-bcf-accent {
+    background-color: var(--sdf-bcf-accent, #1f6fb2) !important;
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.16);
+}
+
+.sdf-bcf-button.sdf-bcf-accent.down {
+    background-color: var(--sdf-bcf-accent-down, #185a91) !important;
+    box-shadow: none;
+}

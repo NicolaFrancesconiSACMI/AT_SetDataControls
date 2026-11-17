@@ -1,0 +1,13 @@
+/** Styles for theme: Base */
+/* Tinted, borderless-looking fill: clearly different from the white, outlined StringSetData box. */
+/* State colours (names in the States list): dark enough to read as text on the tinted box. */
+.TcHmi_Controls_SetDataFramework_StringVisData {
+    --sdf-svd-text-color: #1f2933;
+    --sdf-svd-value-color: #1f2933;
+    --sdf-svd-background: #e9edf1;
+    --sdf-svd-border: #d5dbe1;
+    --sdf-svd-red: #d5000d; /* halfway between #c80000 and the Sacmi red #e2001a */
+    --sdf-svd-blue: #1f6fb2;
+    --sdf-svd-green: #15803d;
+    --sdf-svd-orange: #c2570c;
+}

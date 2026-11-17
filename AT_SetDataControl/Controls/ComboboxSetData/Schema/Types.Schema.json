@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "definitions": {
+    "TcHmi.Controls.SetDataFramework.ComboboxSetData": {
+      "type": "object",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkControlType": "ComboboxSetData",
+      "frameworkControlNamespace": "TcHmi.Controls.SetDataFramework"
+    },
+    "TcHmi.Controls.SetDataFramework.ComboboxSetData.ListItem": {
+      "title": "List Item",
+      "description": "Entry of the drop down list (same as the TcHmiCombobox list item).",
+      "type": "object",
+      "engineeringColumns": [ "id", "text", "value", "category", "hide" ],
+      "propertiesMeta": [
+        {
+          "name": "id",
+          "displayName": "ID",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "Numerical ID for this entry. Can be chosen freely, but must be unique.",
+          "defaultValue": null,
+          "defaultValueInternal": null
+        },
+        {
+          "name": "text",
+          "displayName": "Text",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "Text to show for this entry",
+          "defaultValue": null,
+          "defaultValueInternal": null
+        },
+        {
+          "name": "value",
+          "displayName": "Value",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "Value which is associated to this entry. A number (or numeric text) is also the Data of the audit trail entry.",
+          "defaultValue": null,
+          "defaultValueInternal": null
+        },
+        {
+          "name": "category",
+          "displayName": "Category",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "Optional label shown above the item. All items with the same category are grouped under one label; items without a category come last.",
+          "defaultValue": null,
+          "defaultValueInternal": null
+        },
+        {
+          "name": "hide",
+          "displayName": "Hide",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "TRUE: the item is not shown in the drop down list, so it cannot be picked. If the symbol already holds its value, the box still shows its text. Can be bound to a symbol (e.g. a PLC BOOL): the item leaves / joins the list when it changes, and stays hidden until its first value arrives.",
+          "defaultValue": false,
+          "defaultValueInternal": false
+        }
+      ],
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "text": {
+          "type": "string"
+        },
+        "value": {},
+        "category": {
+          "type": "string"
+        },
+        "hide": {
+          "type": "boolean"
+        }
+      },
+      "required": [ "text" ]
+    },
+    "TcHmi.Controls.SetDataFramework.ComboboxSetData.ListItemList": {
+      "title": "ListItemList",
+      "description": "List Item List",
+      "engineeringDefaultDatatype": 0,
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.ComboboxSetData.ListItem"
+          }
+        },
+        {
+          "type": "array"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "TcHmi.Controls.SetDataFramework.ComboboxSetData.EnumDataSymbol": {
+      "allOf": [
+        {
+          "$ref": "tchmi:framework#/definitions/Symbol"
+        },
+        {
+          "frameworkSymbolSubType": {
+            "$ref": "tchmi:general#/definitions/Object"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,531 @@
+/*
+ * ButtonSetData: layout only. Every colour is a variable set in Themes/<Theme>/Style.css.
+ * The confirm dialog (.sdf-btncf) and the lock hint (.sdf-btn-tip) live in the TopMostLayer, outside the control.
+ * Own prefixes (sdf-btn-, sdf-btncf-): the rules of the other SetDataFramework controls are loaded too.
+ * Button size, font, icon and radius are variables set by ButtonSetData.ts from SizeStyle.
+ */
+
+.TcHmi_Controls_SetDataFramework_ButtonSetData {
+    overflow: hidden;
+}
+
+/* Touch on Chromium: no grey tap-highlight rectangle behind what is tapped (it ignores the rounded corners).
+   The control and its popups already show their own pressed state. */
+.TcHmi_Controls_SetDataFramework_ButtonSetData,
+.sdf-btncf,
+.sdf-btn-tip {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide = TRUE: collapsed, without touching the Visibility attribute */
+.TcHmi_Controls_SetDataFramework_ButtonSetData.sdf-btn-hidden {
+    display: none !important;
+}
+
+.TcHmi_Controls_SetDataFramework_ButtonSetData-Template {
+    /* Defaults = SizeStyle Default; overwritten inline. Width also used by TextWidth in % (ButtonSetData.ts) */
+    --sdf-btn-width: 120px;
+    --sdf-btn-height: 45px;
+    --sdf-btn-font-size: 16px;
+    --sdf-btn-icon-size: 20px;
+    --sdf-btn-radius: 8px;
+    --sdf-btn-gap: 4px; /* text right + button left must not touch; TEXT_GAP in ButtonSetData.ts */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    column-gap: var(--sdf-btn-gap);
+    font-family: inherit;
+}
+
+/* TextWidth 0: no text and no gap */
+.sdf-btn-no-text {
+    column-gap: 0;
+}
+
+.sdf-btn-no-text .sdf-btn-text {
+    display: none;
+}
+
+/* Width (TextWidth) and horizontal alignment (TextAlignment) are set inline */
+.sdf-btn-text {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    color: var(--sdf-btn-side-text-color);
+    font-size: 16px;
+    line-height: 1.15;
+    overflow: hidden;
+    overflow-wrap: initial;
+}
+
+/* Remaining width; places the button (ButtonAlignment, inline) and centres it vertically */
+.sdf-btn-slot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The keycap: fixed size, never stretched with the control (MinWidth / MinHeight keep the control big enough).
+   Light filled body, thin outline and a darker lip at the bottom, no blue: a solid key ("press me"), where the
+   NumericSetData value box is white, outlined and underlined in blue ("edit me"). */
+.sdf-btn-key {
+    --sdf-btn-ring: var(--sdf-btn-background); /* cut-out around the "i" of the lock-info badge */
+    flex: 0 0 auto;
+    width: var(--sdf-btn-width);
+    height: var(--sdf-btn-height);
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px 3px; /* bottom = the edge, so the label sits in the middle of the body */
+    border-radius: var(--sdf-btn-radius);
+    background: var(--sdf-btn-background);
+    color: var(--sdf-btn-text-color);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-border), inset 0 -3px 0 var(--sdf-btn-edge), 0 1px 2px var(--sdf-btn-shadow);
+    font-size: var(--sdf-btn-font-size);
+    font-weight: 600;
+    line-height: 1.15;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: background-color 0.12s, box-shadow 0.12s;
+}
+
+.sdf-btn-small .sdf-btn-key {
+    padding: 0 4px 3px;
+}
+
+.sdf-btn-face {
+    position: relative; /* above the glass highlight */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+    max-width: 100%;
+    transition: transform 0.08s;
+}
+
+/* Icon above the label: Small, or Custom with IconPosition Top */
+.sdf-btn-icon-top .sdf-btn-face {
+    flex-direction: column;
+    gap: 3px;
+}
+
+/* The image in its own colours, scaled to fit */
+.sdf-btn-icon {
+    display: none;
+    flex: 0 0 auto;
+    width: var(--sdf-btn-icon-size);
+    height: var(--sdf-btn-icon-size);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.sdf-btn-has-icon .sdf-btn-icon {
+    display: block;
+}
+
+/* Small without a label: the icon alone, a bit bigger */
+.sdf-btn-small.sdf-btn-no-label .sdf-btn-icon {
+    width: calc(var(--sdf-btn-icon-size) + 4px);
+    height: calc(var(--sdf-btn-icon-size) + 4px);
+}
+
+/* Up to two lines, then an ellipsis: the button never grows */
+.sdf-btn-label {
+    min-width: 0;
+    text-align: center;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.sdf-btn-no-label .sdf-btn-label {
+    display: none;
+}
+
+/* Mouse only: touch screens would keep the hover after a tap */
+@media (hover: hover) {
+    .sdf-btn-key:hover {
+        background: var(--sdf-btn-background-hover);
+    }
+}
+
+/* Pressed: darker body, the lip collapses from 3 to 1 px and the label drops 2 px */
+.sdf-btn-key.sdf-btn-down,
+.sdf-btn-key.sdf-btn-down:hover {
+    background: var(--sdf-btn-background-pressed);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-border), inset 0 -1px 0 var(--sdf-btn-edge), inset 0 2px 3px var(--sdf-btn-shadow);
+}
+
+.sdf-btn-down .sdf-btn-face {
+    transform: translateY(2px);
+}
+
+/* Toggle ON: a lit glass bulb. Pale core, coloured rim, glow around, highlight on the top half.
+   Also when locked: the value stays visible, only the badge says it cannot be operated. */
+.sdf-btn-on .sdf-btn-key,
+.sdf-btn-on .sdf-btn-key:hover,
+.sdf-btn-locked.sdf-btn-on .sdf-btn-key,
+.sdf-btn-locked.sdf-btn-on .sdf-btn-key:hover,
+.sdf-btn-locked.sdf-btn-on .sdf-btn-key.sdf-btn-down {
+    --sdf-btn-ring: var(--sdf-btn-glass-core);
+    background: radial-gradient(ellipse 85% 95% at 50% 40%, var(--sdf-btn-glass-core) 0%, var(--sdf-btn-glass-mid) 58%, var(--sdf-btn-glass-rim) 100%);
+    color: var(--sdf-btn-glass-text);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-glass-line), inset 0 -2px 0 var(--sdf-btn-glass-line),
+        0 0 12px 1px var(--sdf-btn-glass-glow), 0 0 3px var(--sdf-btn-glass-glow);
+}
+
+.sdf-btn-on .sdf-btn-key::before {
+    content: '';
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 3px;
+    height: 42%;
+    border-radius: 6px 6px 50% 50% / 6px 6px 100% 100%;
+    background: linear-gradient(var(--sdf-btn-glass-highlight), transparent);
+    pointer-events: none;
+}
+
+@media (hover: hover) {
+    .sdf-btn-on .sdf-btn-key:hover {
+        filter: brightness(1.03);
+    }
+}
+
+.sdf-btn-on .sdf-btn-key.sdf-btn-down,
+.sdf-btn-on .sdf-btn-key.sdf-btn-down:hover {
+    background: radial-gradient(ellipse 85% 95% at 50% 45%, var(--sdf-btn-glass-mid) 0%, var(--sdf-btn-glass-rim) 100%);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-glass-line), inset 0 2px 4px var(--sdf-btn-shadow), 0 0 6px var(--sdf-btn-glass-glow);
+    filter: none;
+}
+
+.sdf-btn-on .sdf-btn-key.sdf-btn-down::before {
+    opacity: 0.5;
+}
+
+/* Lock badge: top-right corner, the label does not move. One icon at a time. */
+.sdf-btn-badge {
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 16px;
+    height: 16px;
+    color: var(--sdf-btn-lock-color);
+}
+
+.sdf-btn-small .sdf-btn-badge {
+    top: 4px;
+    right: 4px;
+    width: 14px;
+    height: 14px;
+}
+
+.sdf-btn-badge svg {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* Lock = TRUE: the button looks exactly the same (body, label, icon, lit or not), as the other SetDataFramework
+   controls; only the lock badge and no hover / press feedback say it cannot be operated. */
+.sdf-btn-locked .sdf-btn-key {
+    cursor: default;
+}
+
+.sdf-btn-locked .sdf-btn-key:hover {
+    background: var(--sdf-btn-background);
+}
+
+.sdf-btn-locked.sdf-btn-on .sdf-btn-key:hover {
+    filter: none;
+}
+
+.sdf-btn-locked .sdf-btn-down .sdf-btn-face {
+    transform: none;
+}
+
+.sdf-btn-locked .sdf-btn-badge,
+.sdf-btn-locked .sdf-btn-lock {
+    display: block;
+}
+
+.sdf-btn-locked.sdf-btn-on .sdf-btn-badge {
+    color: var(--sdf-btn-glass-text);
+}
+
+/* Lock with a LockDescription: blue "lock + i" badge with a frame ("press me"), a tap shows the description.
+   Both classes in the selectors: they must beat the plain Lock rules. */
+.sdf-btn-locked.sdf-btn-has-hint .sdf-btn-key {
+    cursor: pointer;
+}
+
+.sdf-btn-locked.sdf-btn-has-hint .sdf-btn-lock {
+    display: none;
+}
+
+.sdf-btn-locked.sdf-btn-has-hint .sdf-btn-lockinfo {
+    display: block;
+}
+
+.sdf-btn-locked.sdf-btn-has-hint .sdf-btn-badge,
+.sdf-btn-locked.sdf-btn-has-hint.sdf-btn-on .sdf-btn-badge {
+    color: var(--sdf-btn-accent);
+    border-radius: 4px;
+    outline: 1.5px solid var(--sdf-btn-accent);
+    outline-offset: 1.5px;
+}
+
+/* No "operate" right for the logged-in user (class kept up to date by the framework on login/logout):
+   same as Lock (unchanged look, no hover) with the user lock badge, no hint. Wins over Lock. */
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-key {
+    cursor: not-allowed;
+}
+
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-key:hover {
+    background: var(--sdf-btn-background);
+}
+
+/* ON without the right: the rule above must not take the bulb away on hover */
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-on .sdf-btn-key,
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-on .sdf-btn-key:hover {
+    background: radial-gradient(ellipse 85% 95% at 50% 40%, var(--sdf-btn-glass-core) 0%, var(--sdf-btn-glass-mid) 58%, var(--sdf-btn-glass-rim) 100%);
+    color: var(--sdf-btn-glass-text);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-glass-line), inset 0 -2px 0 var(--sdf-btn-glass-line),
+        0 0 12px 1px var(--sdf-btn-glass-glow), 0 0 3px var(--sdf-btn-glass-glow);
+    filter: none;
+}
+
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-badge {
+    display: block;
+    outline: none;
+    color: var(--sdf-btn-lock-color);
+}
+
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-on .sdf-btn-badge {
+    color: var(--sdf-btn-glass-text);
+}
+
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-userlock {
+    display: block;
+}
+
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-lock,
+.TcHmi_Controls_SetDataFramework_ButtonSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-btn-lockinfo {
+    display: none;
+}
+
+/* Toggle with Variable TRUE: stays pushed in (lip collapsed, label down, inner shadow), also when locked and on hover.
+   Control + template class in front: it must beat the Lock / no-right hover rules above. */
+.TcHmi_Controls_SetDataFramework_ButtonSetData .TcHmi_Controls_SetDataFramework_ButtonSetData-Template.sdf-btn-latched .sdf-btn-key,
+.TcHmi_Controls_SetDataFramework_ButtonSetData .TcHmi_Controls_SetDataFramework_ButtonSetData-Template.sdf-btn-latched .sdf-btn-key:hover {
+    background: var(--sdf-btn-background-pressed);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-border), inset 0 -1px 0 var(--sdf-btn-edge), inset 0 2px 3px var(--sdf-btn-shadow);
+}
+
+/* Latched and lit: the bulb keeps its full glow, only the lip collapses */
+.TcHmi_Controls_SetDataFramework_ButtonSetData .TcHmi_Controls_SetDataFramework_ButtonSetData-Template.sdf-btn-latched.sdf-btn-on .sdf-btn-key,
+.TcHmi_Controls_SetDataFramework_ButtonSetData .TcHmi_Controls_SetDataFramework_ButtonSetData-Template.sdf-btn-latched.sdf-btn-on .sdf-btn-key:hover {
+    background: radial-gradient(ellipse 85% 95% at 50% 40%, var(--sdf-btn-glass-core) 0%, var(--sdf-btn-glass-mid) 58%, var(--sdf-btn-glass-rim) 100%);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-glass-line), inset 0 2px 4px var(--sdf-btn-shadow),
+        0 0 12px 1px var(--sdf-btn-glass-glow), 0 0 3px var(--sdf-btn-glass-glow);
+    filter: none;
+}
+
+.sdf-btn-latched .sdf-btn-face,
+.sdf-btn-locked.sdf-btn-latched .sdf-btn-face {
+    transform: translateY(2px);
+}
+
+.sdf-btn-latched.sdf-btn-on .sdf-btn-key::before {
+    opacity: 1;
+}
+
+/* Write failed: blinks three times */
+@keyframes sdf-btn-blink {
+    0%, 100% { box-shadow: inset 0 0 0 2px var(--sdf-btn-error); }
+    50% { box-shadow: none; }
+}
+
+.sdf-btn-key.sdf-btn-error {
+    animation: sdf-btn-blink 0.8s steps(1, end) 3;
+}
+
+/* ---------- lock hint ---------- */
+
+/* Bubble above the button (.sdf-btn-tip-below: under it); --sdf-tip-arrow-x is set by the control */
+.sdf-btn-tip {
+    max-width: 280px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid var(--sdf-tip-border, #1f2933);
+    border-radius: 8px;
+    background-color: var(--sdf-tip-background, #1f2933);
+    color: var(--sdf-tip-text, #ffffff);
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.24);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sdf-btn-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--sdf-tip-arrow-x, 50%);
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: var(--sdf-tip-background, #1f2933);
+}
+
+.sdf-btn-tip.sdf-btn-tip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--sdf-tip-background, #1f2933);
+}
+
+/* ---------- confirm dialog (Toggle; same as BooleanSetData) ---------- */
+
+.sdf-btncf {
+    width: 440px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sdf-btncf-panel, #f4f6f8);
+    color: var(--sdf-btncf-text, #1f2933);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.28), 0 2px 6px rgba(16, 24, 40, 0.12);
+    font-family: inherit;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.sdf-btncf button {
+    font: inherit;
+    color: inherit;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sdf-btncf-title {
+    flex: 0 0 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px 0 20px;
+    background-color: var(--sdf-btncf-surface, #ffffff);
+    box-shadow: inset 0 -1px 0 var(--sdf-btncf-line, #d5dbe1);
+}
+
+.sdf-btncf-title-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdf-btncf-close {
+    flex: 0 0 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 20px !important;
+    background: transparent;
+}
+
+.sdf-btncf-close.down {
+    background-color: var(--sdf-btncf-surface-down, #e3e8ed);
+}
+
+/* current state -> new state, drawn as the button itself (light key = OFF, glass bulb = ON) */
+.sdf-btncf-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 28px 20px;
+}
+
+.sdf-btncf-pill {
+    min-width: 96px;
+    height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px 3px;
+    border-radius: 8px;
+    background: var(--sdf-btn-background);
+    color: var(--sdf-btn-text-color);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-border), inset 0 -3px 0 var(--sdf-btn-edge);
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.sdf-btncf-pill.sdf-btncf-on {
+    background: radial-gradient(ellipse 85% 95% at 50% 40%, var(--sdf-btn-glass-core) 0%, var(--sdf-btn-glass-mid) 58%, var(--sdf-btn-glass-rim) 100%);
+    color: var(--sdf-btn-glass-text);
+    box-shadow: inset 0 0 0 1px var(--sdf-btn-glass-line), 0 0 10px var(--sdf-btn-glass-glow);
+}
+
+.sdf-btncf-from {
+    opacity: 0.55;
+}
+
+.sdf-btncf-arrow {
+    font-size: 26px;
+    color: var(--sdf-btncf-text-2, #6b7785);
+}
+
+.sdf-btncf-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 12px 12px;
+}
+
+.sdf-btncf-button {
+    height: 56px;
+    border-radius: 10px;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    background-color: var(--sdf-btncf-func, #e9edf1) !important;
+    box-shadow: inset 0 0 0 1px var(--sdf-btncf-line, #d5dbe1), 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+.sdf-btncf-button.down {
+    background-color: var(--sdf-btncf-surface-down, #e3e8ed) !important;
+}
+
+.sdf-btncf-button.sdf-btncf-accent {
+    background-color: var(--sdf-btncf-accent, #1f6fb2) !important;
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.16);
+}
+
+.sdf-btncf-button.sdf-btncf-accent.down {
+    background-color: var(--sdf-btncf-accent-down, #185a91) !important;
+    box-shadow: none;
+}

@@ -1,0 +1,31 @@
+/** Styles for theme: Base-Dark */
+.TcHmi_Controls_SetDataFramework_StringSetData {
+    --sdf-ssd-text-color: #e6e9ed;
+    --sdf-ssd-value-color: #e6e9ed;
+    --sdf-ssd-background: #2b3238;
+    --sdf-ssd-background-pressed: #23384b;
+    --sdf-ssd-border: #4a545e;
+    --sdf-ssd-border-hover: #6b7785;
+    --sdf-ssd-accent: #3a8fd6; /* same as the keyboard accent */
+    --sdf-ssd-lock-color: #aab4be;
+}
+
+.sdf-akb {
+    --sdf-akb-panel: #1e2328;
+    --sdf-akb-surface: #2b3238;
+    --sdf-akb-surface-down: #3a434c;
+    --sdf-akb-func: #353d44;
+    --sdf-akb-line: #424b54;
+    --sdf-akb-text: #e6e9ed;
+    --sdf-akb-text-2: #9aa5b1;
+    --sdf-akb-accent: #3a8fd6;
+    --sdf-akb-accent-down: #2c75b3;
+    --sdf-akb-error: #ff4d4d;
+}
+
+/* Lock hint: light bubble, stands out on the dark screen */
+.sdf-ssd-tip {
+    --sdf-tip-background: #e6e9ed;
+    --sdf-tip-border: #e6e9ed;
+    --sdf-tip-text: #1f2933;
+}

@@ -1,0 +1,91 @@
+/*
+ * NumericVisData: layout only. Every colour is a variable set in Themes/<Theme>/Style.css,
+ * except the limit colour (--sdf-nvd-limit-color), set inline by NumericVisData.ts.
+ * Same geometry as NumericSetData, but a flat readout: no accent line, no icon, no press feedback.
+ */
+
+.TcHmi_Controls_SetDataFramework_NumericVisData {
+    overflow: hidden;
+}
+
+/* Hide = TRUE: collapsed, without touching the Visibility attribute */
+.TcHmi_Controls_SetDataFramework_NumericVisData.sdf-nvd-hidden {
+    display: none !important;
+}
+
+.TcHmi_Controls_SetDataFramework_NumericVisData-Template {
+    /* Same as NumericSetData. Also used by TextWidth in %: 100% = control width - box width - gap (NumericVisData.ts) */
+    --sdf-nvd-box-width: 180px;
+    --sdf-nvd-gap: 4px; /* text right + value box left must not touch */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    column-gap: var(--sdf-nvd-gap);
+    font-family: inherit;
+}
+
+/* Width (TextWidth) and horizontal alignment (TextAlignment) are set inline */
+.sdf-nvd-text {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    color: var(--sdf-nvd-text-color);
+    font-size: 16px;
+    line-height: 1.15;
+    overflow: hidden;
+    overflow-wrap: initial;
+}
+
+/* Remaining width; places the value box (ValueAlignment, inline) and centres it vertically */
+.sdf-nvd-slot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Fixed --sdf-nvd-box-width x 40, shrinks only when the control is too small */
+.sdf-nvd-valuebox {
+    flex: 0 1 var(--sdf-nvd-box-width);
+    width: var(--sdf-nvd-box-width);
+    height: 40px;
+    max-height: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    /* Flat tinted readout = "this is only shown" */
+    border: 1px solid var(--sdf-nvd-border);
+    border-radius: 8px;
+    background: var(--sdf-nvd-background);
+    color: var(--sdf-nvd-value-color);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sdf-nvd-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/* ---------- limit: the value takes the limit colour ---------- */
+.sdf-nvd-limit-active .sdf-nvd-valuebox {
+    color: var(--sdf-nvd-limit-color);
+}
+
+/* Flashing: the off half comes from the page-wide blink clock (startFlashClock in NumericVisData.ts toggles
+   'sdf-flash-off' on <html>), so every flashing NumericVisData / LedVisData / StringVisData on the page blinks in phase. */
+.sdf-flash-off .sdf-nvd-limit-flashing .sdf-nvd-valuebox {
+    color: var(--sdf-nvd-value-color);
+}

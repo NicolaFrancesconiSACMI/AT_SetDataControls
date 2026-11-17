@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "definitions": {
+    "TcHmi.Controls.SetDataFramework.BooleanSetData": {
+      "type": "object",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkControlType": "BooleanSetData",
+      "frameworkControlNamespace": "TcHmi.Controls.SetDataFramework"
+    },
+    "TcHmi.Controls.SetDataFramework.BooleanSetData.NeedConfirm": {
+      "title": "NeedConfirm",
+      "description": "Which presses ask for a confirmation first.",
+      "type": "string",
+      "enum": [ "None", "SwitchOn", "SwitchOff", "All" ]
+    }
+  }
+}

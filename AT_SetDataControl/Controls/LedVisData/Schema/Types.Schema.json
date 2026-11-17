@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "definitions": {
+    "TcHmi.Controls.SetDataFramework.LedVisData": {
+      "type": "object",
+      "frameworkInstanceOf": "TcHmi.Controls.System.TcHmiControl",
+      "frameworkControlType": "LedVisData",
+      "frameworkControlNamespace": "TcHmi.Controls.SetDataFramework"
+    },
+    "TcHmi.Controls.SetDataFramework.LedVisData.Sign": {
+      "type": "string",
+      "title": "Sign",
+      "description": "Comparison: Value <sign> value.",
+      "enum": [ "=", ">", "<", ">=", "<=" ]
+    },
+    "TcHmi.Controls.SetDataFramework.LedVisData.ColorName": {
+      "type": "string",
+      "title": "LED colour",
+      "description": "Grey = theme grey, always unlit. Custom = the picked custom colour.",
+      "enum": [ "Grey", "Red", "Orange", "Green", "Custom" ]
+    },
+    "TcHmi.Controls.SetDataFramework.LedVisData.StateList": {
+      "type": "array",
+      "title": "States",
+      "description": "LED states. The first one whose condition holds lights the LED; put the most severe on top.",
+      "items": {
+        "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.LedVisData.State"
+      }
+    },
+    "TcHmi.Controls.SetDataFramework.LedVisData.State": {
+      "type": "object",
+      "title": "State",
+      "description": "Lights the LED while Value <sign> value.",
+      "engineeringColumns": [ "value", "sign", "color", "customColor", "flashing" ],
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "sign": {
+          "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.LedVisData.Sign"
+        },
+        "color": {
+          "$ref": "tchmi:framework#/definitions/TcHmi.Controls.SetDataFramework.LedVisData.ColorName"
+        },
+        "customColor": {
+          "$ref": "tchmi:framework#/definitions/SolidColor"
+        },
+        "flashing": {
+          "type": "boolean"
+        }
+      },
+      "propertiesMeta": [
+        {
+          "name": "value",
+          "displayName": "Value",
+          "category": "General",
+          "displayPriority": 10,
+          "description": "Compared with the LED Value (BOOL: TRUE = 1, FALSE = 0). Can be bound to a symbol.",
+          "defaultValue": 1,
+          "defaultValueInternal": 1
+        },
+        {
+          "name": "sign",
+          "displayName": "Sign",
+          "category": "General",
+          "displayPriority": 20,
+          "description": "Active while Value <sign> value, e.g. '=' with value 2: active at 2; '>' with value 80: active above 80.",
+          "defaultValue": "=",
+          "defaultValueInternal": "="
+        },
+        {
+          "name": "color",
+          "displayName": "Color",
+          "category": "General",
+          "displayPriority": 30,
+          "description": "Colour of the lit LED. Grey = unlit theme grey (no glow, no blinking). Custom = CustomColor.",
+          "defaultValue": "Green",
+          "defaultValueInternal": "Grey"
+        },
+        {
+          "name": "customColor",
+          "displayName": "CustomColor",
+          "category": "General",
+          "displayPriority": 35,
+          "description": "Used only with Color = Custom. Core, rim and glow are worked out from it.",
+          "defaultValue": null,
+          "defaultValueInternal": null
+        },
+        {
+          "name": "flashing",
+          "displayName": "Flashing",
+          "category": "General",
+          "displayPriority": 40,
+          "description": "TRUE: the LED blinks (lit / unlit) while the state is active.",
+          "defaultValue": false,
+          "defaultValueInternal": false
+        }
+      ]
+    }
+  }
+}

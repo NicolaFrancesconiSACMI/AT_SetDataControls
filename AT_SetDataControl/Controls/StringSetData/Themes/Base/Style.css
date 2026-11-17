@@ -1,0 +1,33 @@
+/** Styles for theme: Base */
+/* Same palette as NumericSetData: white value box, steel-blue accent line. */
+.TcHmi_Controls_SetDataFramework_StringSetData {
+    --sdf-ssd-text-color: #1f2933;
+    --sdf-ssd-value-color: #1f2933;
+    --sdf-ssd-background: #ffffff;
+    --sdf-ssd-background-pressed: #eaf2fa;
+    --sdf-ssd-border: #c3ccd5;
+    --sdf-ssd-border-hover: #8a96a3;
+    --sdf-ssd-accent: #1f6fb2; /* same as the keyboard accent */
+    --sdf-ssd-lock-color: #6b7785;
+}
+
+/* Same palette as the NumericSetData keypad. Red is reserved for errors. */
+.sdf-akb {
+    --sdf-akb-panel: #f4f6f8;
+    --sdf-akb-surface: #ffffff;
+    --sdf-akb-surface-down: #e3e8ed;
+    --sdf-akb-func: #e9edf1;
+    --sdf-akb-line: #d5dbe1;
+    --sdf-akb-text: #1f2933;
+    --sdf-akb-text-2: #6b7785;
+    --sdf-akb-accent: #1f6fb2;
+    --sdf-akb-accent-down: #185a91;
+    --sdf-akb-error: #dc0000;
+}
+
+/* Lock hint: dark bubble, stands out on the light screen */
+.sdf-ssd-tip {
+    --sdf-tip-background: #1f2933;
+    --sdf-tip-border: #1f2933;
+    --sdf-tip-text: #ffffff;
+}
