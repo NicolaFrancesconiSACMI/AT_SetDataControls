@@ -21,7 +21,7 @@
     "alwaysStrict": false
   },
   "include": [
-    "../Packages/Beckhoff.TwinCAT.HMI.Framework.12.760.59/runtimes/native1.12-tchmi/TcHmi.d.ts"
+    "../../AT_HmiToTestFrameworks/TcHmiProject/Packages/Beckhoff.TwinCAT.HMI.Framework.12.760.59/runtimes/native1.12-tchmi/TcHmi.d.ts"
   ],
   "files": [
     "Controls/NumericSetData/NumericSetData.ts",

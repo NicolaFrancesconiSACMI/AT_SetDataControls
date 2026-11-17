@@ -10,57 +10,55 @@
         "type": "Control",
         "basePath": "./Controls/NumericSetData",
         "descriptionFile": "Description.json",
-        "toolboxCategory": "AT_SetDataFramework"
+        "toolboxCategory": "AT_SetDataControls"
     },
     {
         "type": "Control",
         "basePath": "./Controls/StringSetData",
         "descriptionFile": "Description.json",
-        "toolboxCategory": "AT_SetDataFramework"
+        "toolboxCategory": "AT_SetDataControls"
     },
     {
         "type": "Control",
         "basePath": "./Controls/BooleanSetData",
         "descriptionFile": "Description.json",
-        "toolboxCategory": "AT_SetDataFramework"
+        "toolboxCategory": "AT_SetDataControls"
     },
     {
         "type": "Control",
         "basePath": "./Controls/ComboboxSetData",
         "descriptionFile": "Description.json",
-        "toolboxCategory": "AT_SetDataFramework"
+        "toolboxCategory": "AT_SetDataControls"
     },
     {
         "type": "Control",
         "basePath": "./Controls/NumericVisData",
         "descriptionFile": "Description.json",
-        "toolboxCategory": "AT_SetDataFramework"
+        "toolboxCategory": "AT_SetDataControls"
     },
     {
         "type": "Control",
         "basePath": "./Controls/ButtonSetData",
         "descriptionFile": "Description.json",
-        "toolboxCategory": "AT_SetDataFramework"
+        "toolboxCategory": "AT_SetDataControls"
     },
     {
         "type": "Control",
         "basePath": "./Controls/LedVisData",
         "descriptionFile": "Description.json",
-        "toolboxCategory": "AT_SetDataFramework"
+        "toolboxCategory": "AT_SetDataControls"
     },
     {
         "type": "Control",
         "basePath": "./Controls/StringVisData",
         "descriptionFile": "Description.json",
-        "toolboxCategory": "AT_SetDataFramework"
+        "toolboxCategory": "AT_SetDataControls"
 
     }
   ],
   "provideMetadata": {
     "toolbox": {
         "AT.SetDataControls": {
-            "100": "AT_SetData",
-            "200":  "AT_VisData"
         }
     }
   }
