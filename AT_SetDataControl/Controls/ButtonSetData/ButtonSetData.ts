@@ -162,6 +162,26 @@ module TcHmi {
             const GLASS_VARIABLES = ['--sdf-btn-glass-core', '--sdf-btn-glass-mid', '--sdf-btn-glass-rim',
                 '--sdf-btn-glass-line', '--sdf-btn-glass-glow', '--sdf-btn-glass-text'];
 
+            /* ---------- ButtonBackgroundColor: the keycap from one colour ---------- */
+
+            // Body = the picked colour; hover, pressed, outline and lip are shades of it.
+            // Text and lock badge dark on a light colour, white on a dark one.
+            function keyOf(c: Rgb): { [name: string]: string } {
+                const light = 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2] > 150;
+                return {
+                    '--sdf-btn-background': mix(c, 0, 0),
+                    '--sdf-btn-background-hover': mix(c, light ? 0 : 255, 0.07),
+                    '--sdf-btn-background-pressed': mix(c, 0, 0.12),
+                    '--sdf-btn-border': mix(c, 0, 0.18),
+                    '--sdf-btn-edge': mix(c, 0, 0.3),
+                    '--sdf-btn-text-color': light ? '#1f2933' : '#ffffff',
+                    '--sdf-btn-lock-color': light ? 'rgba(31, 41, 51, 0.65)' : 'rgba(255, 255, 255, 0.8)'
+                };
+            }
+
+            const KEY_VARIABLES = ['--sdf-btn-background', '--sdf-btn-background-hover', '--sdf-btn-background-pressed',
+                '--sdf-btn-border', '--sdf-btn-edge', '--sdf-btn-text-color', '--sdf-btn-lock-color'];
+
             /* ---------- confirm dialog (same as BooleanSetData, own prefix) ---------- */
 
             // One dialog per page, built on first use and shown centred in the TopMostLayer.
@@ -257,9 +277,9 @@ module TcHmi {
                     to.classList.toggle('sdf-btncf-on', value);
                     Confirm.__q('.sdf-btncf-cancel').textContent = cancelLabel;
                     Confirm.__q('.sdf-btncf-accent').textContent = confirmLabel;
-                    // The ON pill in the button's OnBackgroundColor, if one is set (else the theme colour)
+                    // The pills in the button's OnBackgroundColor / ButtonBackgroundColor, if set (else the theme colours)
                     const source = owner.__glassStyle();
-                    for (const name of GLASS_VARIABLES) {
+                    for (const name of [...GLASS_VARIABLES, ...KEY_VARIABLES]) {
                         const value = source.getPropertyValue(name);
                         if (value) {
                             Confirm.__el.style.setProperty(name, value);
@@ -493,6 +513,7 @@ module TcHmi {
                 protected __variable: boolean | null | undefined;
                 protected __showBackground: boolean | null | undefined;
                 protected __onBackgroundColor: TcHmi.SolidColor | null | undefined;
+                protected __buttonBackgroundColor: TcHmi.SolidColor | null | undefined;
                 protected __buttonText: string | undefined;
                 protected __icon: string | null | undefined;
                 protected __text: string | undefined;
@@ -510,7 +531,7 @@ module TcHmi {
                 protected __customWidth: number | undefined;
                 protected __customHeight: number | undefined;
                 protected __customFontSize: number | undefined;
-                protected __customIconSize: number | undefined;
+                protected __iconSize: number | undefined;
                 protected __customCornerRadius: number | undefined;
                 protected __iconPosition: ButtonSetData.IconPosition | undefined;
                 protected __onText: string | undefined;
@@ -886,7 +907,43 @@ module TcHmi {
                     GLASS_VARIABLES.forEach(name => style.setProperty(name, glass[name]));
                 }
 
-                /** @internal The OnBackgroundColor variables, for the confirm dialog. */
+                /* ---------- ButtonBackgroundColor ---------- */
+
+                public setButtonBackgroundColor(valueNew: TcHmi.SolidColor | null) {
+                    let convertedValue = TcHmi.ValueConverter.toObject<TcHmi.SolidColor>(valueNew);
+                    if (convertedValue === null) {
+                        convertedValue = this.getAttributeDefaultValueInternal('ButtonBackgroundColor');
+                    }
+                    if (this.__buttonBackgroundColor !== undefined &&
+                        JSON.stringify(convertedValue) === JSON.stringify(this.__buttonBackgroundColor)) {
+                        return;
+                    }
+                    this.__buttonBackgroundColor = convertedValue;
+                    TcHmi.EventProvider.raise(this.__id + '.onPropertyChanged', { propertyName: 'ButtonBackgroundColor' });
+                    this.__processButtonBackgroundColor();
+                }
+
+                public getButtonBackgroundColor() {
+                    return this.__buttonBackgroundColor;
+                }
+
+                // Same as OnBackgroundColor: inline variables win over the theme; none set = the theme keycap.
+                protected __processButtonBackgroundColor() {
+                    const style = this.__elementTemplateRoot[0].style;
+                    const value = this.__buttonBackgroundColor;
+                    const rgb = value && TcHmi.isSolidColor(value) ? parseColor(value.color) : null;
+                    if (value && !rgb) {
+                        TcHmi.Log.warnEx('[ButtonSetData] ' + this.__id + ': ButtonBackgroundColor is not a usable colour, the theme colour is used.');
+                    }
+                    if (!rgb) {
+                        KEY_VARIABLES.forEach(name => style.removeProperty(name));
+                        return;
+                    }
+                    const key = keyOf(rgb);
+                    KEY_VARIABLES.forEach(name => style.setProperty(name, key[name]));
+                }
+
+                /** @internal The OnBackgroundColor / ButtonBackgroundColor variables, for the confirm dialog. */
                 public __glassStyle() {
                     return this.__elementTemplateRoot[0].style;
                 }
@@ -1173,12 +1230,12 @@ module TcHmi {
                     return this.__customFontSize;
                 }
 
-                public setCustomIconSize(valueNew: number | null) {
-                    this.__setCustom('CustomIconSize', '__customIconSize', valueNew);
+                public setIconSize(valueNew: number | null) {
+                    this.__setCustom('IconSize', '__iconSize', valueNew);
                 }
 
-                public getCustomIconSize() {
-                    return this.__customIconSize;
+                public getIconSize() {
+                    return this.__iconSize;
                 }
 
                 public setCustomCornerRadius(valueNew: number | null) {
@@ -1197,7 +1254,7 @@ module TcHmi {
                     if (convertedValue === this.__iconPosition) {
                         return;
                     }
-                    this.__iconPosition = convertedValue || 'Left';
+                    this.__iconPosition = convertedValue || 'Auto';
                     TcHmi.EventProvider.raise(this.__id + '.onPropertyChanged', { propertyName: 'IconPosition' });
                     this.__processSize();
                 }
@@ -1208,7 +1265,7 @@ module TcHmi {
 
                 // The Custom numbers share one setter body: px, never negative.
                 protected __setCustom(name: string, field: '__customWidth' | '__customHeight' | '__customFontSize' |
-                    '__customIconSize' | '__customCornerRadius', valueNew: number | null) {
+                    '__iconSize' | '__customCornerRadius', valueNew: number | null) {
                     let convertedValue = TcHmi.ValueConverter.toNumber(valueNew);
                     if (convertedValue === null || !isFinite(convertedValue)) {
                         convertedValue = this.getAttributeDefaultValueInternal(name);
@@ -1225,16 +1282,26 @@ module TcHmi {
                 protected __size(): ButtonSize {
                     const preset = SIZES[this.__sizeStyle || 'Default'];
                     if (preset) {
-                        return preset;
+                        // IconSize applies to every SizeStyle (icon-only buttons)
+                        return { ...preset, iconSize: this.__iconSize ?? preset.iconSize, iconTop: this.__iconLayout() === 'Top' };
                     }
                     return {
                         width: this.__customWidth || 0,
                         height: this.__customHeight || 0,
                         fontSize: this.__customFontSize || 0,
-                        iconSize: this.__customIconSize || 0,
+                        iconSize: this.__iconSize || 0,
                         radius: this.__customCornerRadius || 0,
-                        iconTop: this.__iconPosition === 'Top'
+                        iconTop: this.__iconLayout() === 'Top'
                     };
+                }
+
+                // IconPosition for every SizeStyle; Auto = the preset (Small: Top, else Left).
+                protected __iconLayout(): Exclude<ButtonSetData.IconPosition, 'Auto'> {
+                    const position = this.__iconPosition || 'Auto';
+                    if (position !== 'Auto') {
+                        return position;
+                    }
+                    return this.__sizeStyle === 'Small' ? 'Top' : 'Left';
                 }
 
                 // Sizes as variables on the template root (Style.css); TextWidth in % depends on the width.
@@ -1247,6 +1314,9 @@ module TcHmi {
                     root.style.setProperty('--sdf-btn-icon-size', size.iconSize + 'px');
                     root.style.setProperty('--sdf-btn-radius', size.radius + 'px');
                     this.__elementTemplateRoot.toggleClass('sdf-btn-icon-top', size.iconTop);
+                    const layout = this.__iconLayout();
+                    this.__elementTemplateRoot.toggleClass('sdf-btn-icon-edge', layout === 'LeftEdge' || layout === 'RightEdge');
+                    this.__elementTemplateRoot.toggleClass('sdf-btn-icon-right', layout === 'RightEdge');
                     this.__elementTemplateRoot.toggleClass('sdf-btn-small', this.__sizeStyle === 'Small');
                     this.__processMinSize();
                 }
@@ -1444,7 +1514,7 @@ module TcHmi {
                 /** Schema/Types.Schema.json */
                 export type ButtonType = 'Standard' | 'Toggle';
                 export type SizeStyle = 'Default' | 'Small' | 'Custom';
-                export type IconPosition = 'Left' | 'Top';
+                export type IconPosition = 'Auto' | 'Left' | 'Top' | 'LeftEdge' | 'RightEdge';
                 export type NeedConfirm = 'None' | 'SwitchOn' | 'SwitchOff' | 'All';
             }
         }

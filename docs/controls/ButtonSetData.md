@@ -48,6 +48,7 @@ The button can light up like a glass bulb, for example from a feedback signal, a
 - **`ShowBackground` set or bound**: it alone decides whether the button is lit. A typical use is binding a feedback signal such as `bMotorRunning`, while `Variable` is the command.
 - **`ShowBackground` not used**: the button is lit while `Variable` is TRUE.
 - `OnBackgroundColor` sets the colour of the bulb. Empty means the theme cyan.
+- `ButtonBackgroundColor` sets the colour of the unlit keycap (for special buttons). Empty means the theme colour.
 
 ## Typical binding
 
@@ -67,6 +68,7 @@ The button can light up like a glass bulb, for example from a feedback signal, a
 | **Variable** | Boolean (TwoWay) | `null` | The BOOL to write. If it is unbound, the control sets its own attribute (events still fire). |
 | ShowBackground | Boolean | `null` | Lights the button. When set or bound, it alone decides (for example from feedback). |
 | OnBackgroundColor | SolidColor | `null` | Colour of the lit bulb. Empty means the theme cyan. |
+| ButtonBackgroundColor | SolidColor | `null` | Colour of the unlit keycap. Hover, pressed, outline and lip are shades of it; text and lock badge turn white on dark colours. Empty means the theme colour. |
 | ButtonText | String | `null` | Label in the button, up to 2 lines. |
 | Icon | Path | `null` | Optional SVG/PNG icon, shown in its own colours. |
 | Text | String | `null` | Description on the left (needs `TextWidth` > 0). Also used as the confirm title and the audit name. |
@@ -82,6 +84,8 @@ The button can light up like a glass bulb, for example from a feedback signal, a
 | Attribute | Type | Default | Description |
 |---|---|---|---|
 | SizeStyle | SizeStyle | `"Default"` | `Default` 120×45 (icon left), `Small` 50×50 (icon on top), `Custom`. |
+| IconPosition | IconPosition | `"Auto"` | Icon position, every SizeStyle. `Auto` = `Top` with Small, else `Left`. `LeftEdge` / `RightEdge` pin the icon to the button edge, the label is centred in the rest. |
+| IconSize | Number | `20` | Icon size in px. Applies to every SizeStyle (`Default`, `Small`, `Custom`), useful for icon-only buttons. |
 | ButtonAlignment | HorizontalAlignment | `"Center"` | Position of the button in the width left of the text. |
 | TextWidth | MeasurementValue | `0` | Width of the left text. **0 means no text.** |
 | TextWidthUnit | MeasurementUnit | `"%"` | `px` or `%`. |
@@ -89,9 +93,7 @@ The button can light up like a glass bulb, for example from a feedback signal, a
 | CustomWidth | Number | `120` | Button width in px (`SizeStyle = Custom`). |
 | CustomHeight | Number | `45` | Button height in px (Custom). |
 | CustomFontSize | Number | `16` | Label font size in px (Custom). |
-| CustomIconSize | Number | `20` | Icon size in px (Custom). |
 | CustomCornerRadius | Number | `8` | Corner radius in px (Custom). |
-| IconPosition | IconPosition | `"Left"` | `Left` or `Top` of the label (Custom). |
 
 ### Confirm (Toggle only)
 
@@ -108,7 +110,7 @@ The button can light up like a glass bulb, for example from a feedback signal, a
 |---|---|
 | ButtonType | `Standard`, `Toggle` |
 | SizeStyle | `Default` (120×45, font 16), `Small` (50×50, font 11), `Custom` |
-| IconPosition | `Left`, `Top` |
+| IconPosition | `Auto`, `Left`, `Top`, `LeftEdge`, `RightEdge` |
 | NeedConfirm | `None`, `SwitchOn` (FALSE→TRUE), `SwitchOff` (TRUE→FALSE), `All` |
 
 ## Events

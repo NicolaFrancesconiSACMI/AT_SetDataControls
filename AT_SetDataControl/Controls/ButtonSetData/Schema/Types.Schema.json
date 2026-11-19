@@ -21,9 +21,9 @@
     },
     "TcHmi.Controls.SetDataFramework.ButtonSetData.IconPosition": {
       "title": "IconPosition",
-      "description": "Where the icon sits with SizeStyle Custom.",
+      "description": "Where the icon sits (every SizeStyle). Auto: Top with Small, else Left. Left / Top: next to / above the label. LeftEdge / RightEdge: pinned to the button's left / right edge, the label centred in the rest.",
       "type": "string",
-      "enum": [ "Left", "Top" ]
+      "enum": [ "Auto", "Left", "Top", "LeftEdge", "RightEdge" ]
     },
     "TcHmi.Controls.SetDataFramework.ButtonSetData.NeedConfirm": {
       "title": "NeedConfirm",

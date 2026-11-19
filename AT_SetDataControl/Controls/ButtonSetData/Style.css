@@ -112,10 +112,24 @@
     transition: transform 0.08s;
 }
 
-/* Icon above the label: Small, or Custom with IconPosition Top */
+/* Icon above the label: IconPosition Top, or Auto with SizeStyle Small */
 .sdf-btn-icon-top .sdf-btn-face {
     flex-direction: column;
     gap: 3px;
+}
+
+/* IconPosition LeftEdge / RightEdge: the face fills the key, the icon sits at its edge (inside the padding)
+   and the label is centred in the width that is left, so the icon no longer moves with the text length */
+.sdf-btn-icon-edge .sdf-btn-face {
+    flex: 1 1 auto;
+}
+
+.sdf-btn-icon-edge .sdf-btn-label {
+    flex: 1 1 auto;
+}
+
+.sdf-btn-icon-right .sdf-btn-face {
+    flex-direction: row-reverse;
 }
 
 /* The image in its own colours, scaled to fit */
