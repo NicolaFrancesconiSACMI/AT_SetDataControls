@@ -2,14 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>AT_SetDataControls</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>Basic controls to set and visualize datas</description>
     <authors>Francesconi Nicola</authors>
     <title>AT_SetDataControls</title>
     <owners>SACMI</owners>
-    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>Added PasswordSetData. Added functions to open/close a keyboard with no fixed target. Modified the ButtonSetData to have a bit more flexibility </releaseNotes>
     <copyright>Copyright 2026</copyright>
     <tags>TwinCAT HMI ProductVersion_1.12.760.59</tags>
     <license type="file">LICENSE.txt</license>
