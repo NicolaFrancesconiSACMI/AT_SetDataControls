@@ -66,6 +66,12 @@ To update, open *Manage NuGet Packages → Updates*.
 | [StringVisData](docs/controls/StringVisData.md) | Shows a string, or turns a number/state into a text with a colour. | `String` or `Value` |
 | [LedVisData](docs/controls/LedVisData.md) | Round status LED for a BOOL or numeric value, with colour and blinking per state. | `Value` |
 
+### Functions
+
+| Function | What it is for |
+|---|---|
+| [OpenNumKeyboard / OpenStringKeyboard / CloseKeyboard](docs/functions/Keyboards.md) | Opens the package's keypad or keyboard for **any** focused text field, for example a TcHmiTextbox. It types straight into the field and has no Confirm key. |
+
 The Set and Vis controls have the same height and the same value-box geometry. Placed in a column, they line up as one form.
 
 ## Quick start

@@ -32,6 +32,10 @@
     "Controls/NumericVisData/NumericVisData.ts",
     "Controls/ButtonSetData/ButtonSetData.ts",
     "Controls/LedVisData/LedVisData.ts",
-    "Controls/StringVisData/StringVisData.ts"
+    "Controls/StringVisData/StringVisData.ts",
+    "Functions/VirtualKeyboard.ts",
+    "Functions/OpenNumKeyboard.ts",
+    "Functions/OpenStringKeyboard.ts",
+    "Functions/CloseKeyboard.ts"
   ]
 }

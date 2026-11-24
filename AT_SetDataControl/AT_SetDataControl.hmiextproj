@@ -140,6 +140,13 @@
     <Content Include="Controls\StringVisData\Style.css" />
     <Content Include="Controls\StringVisData\Description.json" />
     <Content Include="Controls\StringVisData\Schema\Types.Schema.json" />
+    <Content Include="Functions\VirtualKeyboard.ts" />
+    <Content Include="Functions\OpenNumKeyboard.ts" />
+    <Content Include="Functions\OpenStringKeyboard.ts" />
+    <Content Include="Functions\CloseKeyboard.ts" />
+    <Content Include="Functions\OpenNumKeyboard.function.json" />
+    <Content Include="Functions\OpenStringKeyboard.function.json" />
+    <Content Include="Functions\CloseKeyboard.function.json" />
     <Content Include=".tfignore">
       <SubType>Content</SubType>
       <Visible>false</Visible>
@@ -160,6 +167,7 @@
   <ItemGroup>
     <Folder Include="Images\" />
     <Folder Include="Controls\" />
+    <Folder Include="Functions\" />
     <Folder Include="Controls\NumericSetData\" />
     <Folder Include="Controls\NumericSetData\Icons\" />
     <Folder Include="Controls\NumericSetData\Schema\" />

@@ -60,6 +60,21 @@
         "descriptionFile": "Description.json",
         "toolboxCategory": "AT_SetDataControls"
 
+    },
+    {
+        "type": "Function",
+        "basePath": "./Functions",
+        "descriptionFile": "OpenNumKeyboard.function.json"
+    },
+    {
+        "type": "Function",
+        "basePath": "./Functions",
+        "descriptionFile": "OpenStringKeyboard.function.json"
+    },
+    {
+        "type": "Function",
+        "basePath": "./Functions",
+        "descriptionFile": "CloseKeyboard.function.json"
     }
   ],
   "provideMetadata": {
