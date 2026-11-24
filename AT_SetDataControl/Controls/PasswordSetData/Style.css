@@ -1,0 +1,524 @@
+/*
+ * PasswordSetData: layout only. Every colour is a variable set in Themes/<Theme>/Style.css.
+ * The keyboard (.sdf-pkb) and the lock hint (.sdf-psd-tip) live in the TopMostLayer, outside the control.
+ * Own prefixes (sdf-psd-, sdf-pkb-): the rules of the other SetDataFramework controls are loaded too.
+ */
+
+/* Nothing in the control can be selected (and so copied); copy / cut / drag / context menu are also
+   refused in PasswordSetData.ts */
+.TcHmi_Controls_SetDataFramework_PasswordSetData {
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Touch on Chromium: no grey tap-highlight rectangle behind what is tapped (it ignores the rounded corners).
+   The control and its popups already show their own pressed state. */
+.TcHmi_Controls_SetDataFramework_PasswordSetData,
+.sdf-pkb,
+.sdf-psd-tip {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide = TRUE: collapsed, without touching the Visibility attribute */
+.TcHmi_Controls_SetDataFramework_PasswordSetData.sdf-psd-hidden {
+    display: none !important;
+}
+
+.TcHmi_Controls_SetDataFramework_PasswordSetData-Template {
+    /* Same box as the NumericSetData value box by default. StringWidth overrides the box width inline;
+       in px this variable follows it, for TextWidth in %: 100% = control width - box width - gap (PasswordSetData.ts) */
+    --sdf-psd-box-width: 180px;
+    --sdf-psd-gap: 4px; /* text right + value box left must not touch */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    column-gap: var(--sdf-psd-gap);
+    font-family: inherit;
+}
+
+/* Width (TextWidth) and horizontal alignment (TextAlignment) are set inline */
+.sdf-psd-text {
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    color: var(--sdf-psd-text-color);
+    font-size: 16px;
+    line-height: 1.15;
+    overflow: hidden;
+    overflow-wrap: initial;
+}
+
+/* Remaining width; places the value box (SetDataAlignment, inline) and centres it vertically */
+.sdf-psd-slot {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* StringWidth x 40 (width and flex-basis inline), shrinks only when the control is too small */
+.sdf-psd-valuebox {
+    flex: 0 1 var(--sdf-psd-box-width);
+    width: var(--sdf-psd-box-width);
+    height: 40px;
+    max-height: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px;
+    /* Outlined input: thin border + accent line at the bottom = "this can be set" */
+    border: 1px solid var(--sdf-psd-border);
+    border-radius: 8px;
+    background: var(--sdf-psd-background);
+    box-shadow: inset 0 -2px 0 var(--sdf-psd-accent);
+    color: var(--sdf-psd-value-color);
+    font-size: 15px;
+    font-weight: 600;
+    white-space: pre; /* leading / repeated spaces of the string stay visible */
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+/* Mouse only: touch screens would keep the hover after a tap */
+@media (hover: hover) {
+    .sdf-psd-valuebox:hover {
+        border-color: var(--sdf-psd-border-hover);
+    }
+}
+
+.sdf-psd-valuebox:active {
+    border-color: var(--sdf-psd-accent);
+    background: var(--sdf-psd-background-pressed);
+    box-shadow: inset 0 0 0 1px var(--sdf-psd-accent);
+}
+
+/* The dots in the space left of the icon; horizontal alignment (StringAlignment) inline */
+.sdf-psd-value {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+/* All icons sit on the right, after the string, one at a time: edit, lock, lock with "i" or user lock.
+   Each takes the same 18 px, so the string does not move when the state changes. */
+.sdf-psd-lock,
+.sdf-psd-lockinfo,
+.sdf-psd-userlock {
+    display: none;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    color: var(--sdf-psd-lock-color);
+}
+
+/* Edit affordance: 16 px drawing + 1 px each side = the 18 px of the lock icons */
+.sdf-psd-edit {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin: 0 1px;
+    color: var(--sdf-psd-accent);
+}
+
+/* Lock = TRUE: same box without the accent line (no longer looks like a button),
+   lock icon instead of the edit icon, no press feedback */
+.sdf-psd-locked .sdf-psd-valuebox,
+.sdf-psd-locked .sdf-psd-valuebox:hover,
+.sdf-psd-locked .sdf-psd-valuebox:active {
+    background: var(--sdf-psd-background);
+    border-color: var(--sdf-psd-border);
+    box-shadow: none;
+    cursor: default;
+}
+
+/* Lock with a LockDescription: a tap shows the description */
+.sdf-psd-has-hint .sdf-psd-valuebox,
+.sdf-psd-has-hint .sdf-psd-valuebox:hover,
+.sdf-psd-has-hint .sdf-psd-valuebox:active {
+    cursor: pointer;
+}
+
+/* Lock with an "i" badge instead of the plain lock, in the same 18 px on the right so the string does not move.
+   The frame is an outline: it takes no space and reads as "press me".
+   Both classes in the selector: it must beat ".sdf-psd-locked .sdf-psd-lock", which comes further down. */
+.sdf-psd-locked.sdf-psd-has-hint .sdf-psd-lock {
+    display: none;
+}
+
+.sdf-psd-has-hint .sdf-psd-lockinfo {
+    display: block;
+    color: var(--sdf-psd-accent);
+    outline: 1.5px solid var(--sdf-psd-accent);
+    outline-offset: 2px;
+    border-radius: 5px;
+    transition: background-color 0.15s;
+}
+
+.sdf-psd-has-hint .sdf-psd-valuebox:active .sdf-psd-lockinfo {
+    background-color: var(--sdf-psd-background-pressed);
+}
+
+.sdf-psd-locked .sdf-psd-lock {
+    display: block;
+}
+
+.sdf-psd-locked .sdf-psd-edit {
+    display: none;
+}
+
+/* No "operate" right for the logged-in user (class kept up to date by the framework on login/logout):
+   same box as Lock, user lock icon. Wins over Lock: locked and not allowed shows only the user lock. */
+.TcHmi_Controls_SetDataFramework_PasswordSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-psd-valuebox,
+.TcHmi_Controls_SetDataFramework_PasswordSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-psd-valuebox:hover,
+.TcHmi_Controls_SetDataFramework_PasswordSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-psd-valuebox:active {
+    background: var(--sdf-psd-background);
+    border-color: var(--sdf-psd-border);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.TcHmi_Controls_SetDataFramework_PasswordSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-psd-userlock {
+    display: block;
+}
+
+.TcHmi_Controls_SetDataFramework_PasswordSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-psd-lock,
+.TcHmi_Controls_SetDataFramework_PasswordSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-psd-lockinfo,
+.TcHmi_Controls_SetDataFramework_PasswordSetData.TcHmi_Controls_System_TcHmiControl-operate-disallowed .sdf-psd-edit {
+    display: none;
+}
+
+/* ---------- lock hint ---------- */
+
+/* Bubble above the value box (.sdf-psd-tip-below: under it); --sdf-tip-arrow-x is set by the control */
+.sdf-psd-tip {
+    max-width: 280px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid var(--sdf-tip-border, #1f2933);
+    border-radius: 8px;
+    background-color: var(--sdf-tip-background, #1f2933);
+    color: var(--sdf-tip-text, #ffffff);
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.24);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sdf-psd-tip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--sdf-tip-arrow-x, 50%);
+    margin-left: -6px;
+    border: 6px solid transparent;
+    border-top-color: var(--sdf-tip-background, #1f2933);
+}
+
+.sdf-psd-tip.sdf-psd-tip-below::after {
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--sdf-tip-background, #1f2933);
+}
+
+/* ---------- keyboard ---------- */
+
+.sdf-pkb {
+    width: 920px;
+    height: 500px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sdf-pkb-panel, #f4f6f8);
+    color: var(--sdf-pkb-text, #1f2933);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.28), 0 2px 6px rgba(16, 24, 40, 0.12);
+    font-family: inherit;
+    /* Repeated taps must not select text or zoom; only the password fields are selectable (caret),
+       their content can still not be copied (password fields + copy / cut refused in PasswordSetData.ts) */
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.sdf-pkb button {
+    font: inherit;
+    color: inherit;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.sdf-pkb-title {
+    flex: 0 0 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 6px 0 40px;
+    position: relative;
+    background-color: var(--sdf-pkb-surface, #ffffff);
+    box-shadow: inset 0 -1px 0 var(--sdf-pkb-line, #d5dbe1);
+    cursor: move;
+    touch-action: none; /* the drag must not scroll or zoom */
+}
+
+/* grip dots: this bar drags the keyboard */
+.sdf-pkb-title::before {
+    content: "\2807\2807";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    letter-spacing: -6px;
+    color: var(--sdf-pkb-text-2, #6b7785);
+    pointer-events: none;
+}
+
+.sdf-pkb-title-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sdf-pkb-close {
+    flex: 0 0 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 20px !important;
+    background: transparent;
+}
+
+.sdf-pkb-close.down {
+    background-color: var(--sdf-pkb-surface-down, #e3e8ed);
+}
+
+.sdf-pkb-value {
+    flex: 0 0 56px;
+    margin: 12px 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px 0 12px;
+    border-radius: 10px;
+    background-color: var(--sdf-pkb-surface, #ffffff);
+    box-shadow: inset 0 0 0 1px var(--sdf-pkb-line, #d5dbe1);
+}
+
+.sdf-pkb-value:focus-within {
+    box-shadow: inset 0 0 0 2px var(--sdf-pkb-accent, #1f6fb2);
+}
+
+/* The theme styles every <input> (and its :focus): the inner field must stay invisible,
+   only .sdf-pkb-value draws the box and its focus ring. */
+.sdf-pkb .sdf-pkb-input,
+.sdf-pkb .sdf-pkb-input:focus,
+.sdf-pkb .sdf-pkb-input:focus-visible,
+.sdf-pkb .sdf-pkb-input:hover {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+.sdf-pkb-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    font-size: 26px;
+    text-align: left;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.sdf-pkb-count {
+    flex: 0 0 auto;
+    font-size: 14px;
+    color: var(--sdf-pkb-text-2, #6b7785);
+    pointer-events: none;
+}
+
+/* No browser reveal (eye) or clear button in the password fields */
+.sdf-pkb-input::-ms-reveal,
+.sdf-pkb-input::-ms-clear {
+    display: none;
+}
+
+/* Label in front of the field (NeedRepeat only; empty without it) */
+.sdf-pkb-label {
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--sdf-pkb-text-2, #6b7785);
+}
+
+.sdf-pkb-label:empty {
+    display: none;
+}
+
+/* Repeat field: only with NeedRepeat; the keyboard grows by its height so the keys keep their size */
+.sdf-pkb-value-repeat {
+    display: none;
+}
+
+.sdf-pkb.sdf-pkb-repeat {
+    height: 568px;
+}
+
+.sdf-pkb-repeat .sdf-pkb-value-repeat {
+    display: flex;
+}
+
+/* Password rules (NeedRepeat + MinLength / MinSpecialCharacters): one pill per rule inside the New box,
+   before the counter. Symbols only (↔ ≥8 ✗, #@ ≥1 ✓): red ✗ until the New field meets it, green ✓ after. */
+.sdf-pkb-rules {
+    display: none;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.sdf-pkb-has-rules .sdf-pkb-rules {
+    display: flex;
+}
+
+.sdf-pkb-rule {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--sdf-pkb-error, #dc0000);
+    box-shadow: inset 0 0 0 1.5px currentColor;
+    transition: color 0.15s;
+}
+
+.sdf-pkb-rule-icon {
+    font-size: 15px;
+}
+
+.sdf-pkb-rule-state::before {
+    content: "\2717"; /* ✗ */
+}
+
+.sdf-pkb-rule.sdf-pkb-rule-ok {
+    color: var(--sdf-pkb-ok, #1e8e3e);
+}
+
+.sdf-pkb-rule-ok .sdf-pkb-rule-state::before {
+    content: "\2713"; /* ✓ */
+}
+
+.sdf-pkb-repeat .sdf-pkb-label {
+    width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 12 columns, 5 rows. ✓ is two columns wide and two rows tall (Enter position). */
+.sdf-pkb-keys {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 6px;
+    padding: 8px 12px 12px;
+}
+
+.sdf-pkb-key {
+    border-radius: 10px;
+    font-size: 22px !important;
+    background-color: var(--sdf-pkb-surface, #ffffff) !important;
+    box-shadow: inset 0 0 0 1px var(--sdf-pkb-line, #d5dbe1), 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+.sdf-pkb-key.sdf-pkb-func {
+    font-size: 18px !important;
+    background-color: var(--sdf-pkb-func, #e9edf1) !important;
+}
+
+.sdf-pkb-key.down {
+    background-color: var(--sdf-pkb-surface-down, #e3e8ed) !important;
+    box-shadow: inset 0 0 0 1px var(--sdf-pkb-line, #d5dbe1);
+}
+
+.sdf-pkb-key[data-key="Backspace"] { grid-column: 11 / span 2; }
+.sdf-pkb-key[data-key="Enter"]     { grid-column: 11 / span 2; grid-row: 2 / span 2; }
+.sdf-pkb-key[data-key="Shift"]     { grid-column: 1 / span 2; }
+.sdf-pkb-key[data-key="Page"]      { grid-column: 1 / span 2; }
+.sdf-pkb-key[data-key="Space"]     { grid-column: 4 / span 6; }
+.sdf-pkb-key[data-key="Clear"]     { grid-column: 11 / span 2; }
+
+.sdf-pkb-key.sdf-pkb-key-accent {
+    font-size: 30px !important;
+    background-color: var(--sdf-pkb-accent, #1f6fb2) !important;
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.16);
+}
+
+.sdf-pkb-key.sdf-pkb-key-accent.down {
+    background-color: var(--sdf-pkb-accent-down, #185a91) !important;
+    box-shadow: none;
+}
+
+/* ⇧ once: outlined in the accent colour; caps lock: filled */
+.sdf-pkb-shift-once [data-key="Shift"] {
+    box-shadow: inset 0 0 0 2px var(--sdf-pkb-accent, #1f6fb2);
+    color: var(--sdf-pkb-accent, #1f6fb2);
+}
+
+.sdf-pkb-shift-lock [data-key="Shift"] {
+    background-color: var(--sdf-pkb-accent, #1f6fb2) !important;
+    color: #ffffff;
+}
+
+/* ---------- error: write failed / too long. Removed on the next edit ---------- */
+@keyframes sdf-pkb-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+}
+
+.sdf-pkb-error,
+.sdf-pkb-error * {
+    color: var(--sdf-pkb-error, #dc0000) !important;
+}
+
+.sdf-pkb-value.sdf-pkb-error {
+    box-shadow: inset 0 0 0 2px var(--sdf-pkb-error, #dc0000) !important;
+}
+
+.sdf-pkb-error {
+    animation: sdf-pkb-blink 0.8s steps(1, end) infinite;
+}

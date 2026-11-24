@@ -1,0 +1,34 @@
+/** Styles for theme: Base */
+/* Same palette as NumericSetData: white value box, steel-blue accent line. */
+.TcHmi_Controls_SetDataFramework_PasswordSetData {
+    --sdf-psd-text-color: #1f2933;
+    --sdf-psd-value-color: #1f2933;
+    --sdf-psd-background: #ffffff;
+    --sdf-psd-background-pressed: #eaf2fa;
+    --sdf-psd-border: #c3ccd5;
+    --sdf-psd-border-hover: #8a96a3;
+    --sdf-psd-accent: #1f6fb2; /* same as the keyboard accent */
+    --sdf-psd-lock-color: #6b7785;
+}
+
+/* Same palette as the NumericSetData keypad. Red is reserved for errors. */
+.sdf-pkb {
+    --sdf-pkb-panel: #f4f6f8;
+    --sdf-pkb-surface: #ffffff;
+    --sdf-pkb-surface-down: #e3e8ed;
+    --sdf-pkb-func: #e9edf1;
+    --sdf-pkb-line: #d5dbe1;
+    --sdf-pkb-text: #1f2933;
+    --sdf-pkb-text-2: #6b7785;
+    --sdf-pkb-accent: #1f6fb2;
+    --sdf-pkb-accent-down: #185a91;
+    --sdf-pkb-error: #dc0000;
+    --sdf-pkb-ok: #1e8e3e; /* password rule met */
+}
+
+/* Lock hint: dark bubble, stands out on the light screen */
+.sdf-psd-tip {
+    --sdf-tip-background: #1f2933;
+    --sdf-tip-border: #1f2933;
+    --sdf-tip-text: #ffffff;
+}

@@ -84,6 +84,14 @@
     <Content Include="Controls\StringSetData\Style.css" />
     <Content Include="Controls\StringSetData\Description.json" />
     <Content Include="Controls\StringSetData\Schema\Types.Schema.json" />
+    <Content Include="Controls\PasswordSetData\Icons\16x16.png" />
+    <Content Include="Controls\PasswordSetData\Template.html" />
+    <Content Include="Controls\PasswordSetData\Themes\Base\Style.css" />
+    <Content Include="Controls\PasswordSetData\Themes\Base-Dark\Style.css" />
+    <Content Include="Controls\PasswordSetData\PasswordSetData.ts" />
+    <Content Include="Controls\PasswordSetData\Style.css" />
+    <Content Include="Controls\PasswordSetData\Description.json" />
+    <Content Include="Controls\PasswordSetData\Schema\Types.Schema.json" />
     <Content Include="Controls\BooleanSetData\Icons\16x16.png" />
     <Content Include="Controls\BooleanSetData\Template.html" />
     <Content Include="Controls\BooleanSetData\Themes\Base\Style.css" />
@@ -164,6 +172,12 @@
     <Folder Include="Controls\StringSetData\Themes\" />
     <Folder Include="Controls\StringSetData\Themes\Base-Dark\" />
     <Folder Include="Controls\StringSetData\Themes\Base\" />
+    <Folder Include="Controls\PasswordSetData\" />
+    <Folder Include="Controls\PasswordSetData\Icons\" />
+    <Folder Include="Controls\PasswordSetData\Schema\" />
+    <Folder Include="Controls\PasswordSetData\Themes\" />
+    <Folder Include="Controls\PasswordSetData\Themes\Base-Dark\" />
+    <Folder Include="Controls\PasswordSetData\Themes\Base\" />
     <Folder Include="Controls\BooleanSetData\" />
     <Folder Include="Controls\BooleanSetData\Icons\" />
     <Folder Include="Controls\BooleanSetData\Schema\" />

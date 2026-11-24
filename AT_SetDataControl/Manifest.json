@@ -20,6 +20,12 @@
     },
     {
         "type": "Control",
+        "basePath": "./Controls/PasswordSetData",
+        "descriptionFile": "Description.json",
+        "toolboxCategory": "AT_SetDataControls"
+    },
+    {
+        "type": "Control",
         "basePath": "./Controls/BooleanSetData",
         "descriptionFile": "Description.json",
         "toolboxCategory": "AT_SetDataControls"

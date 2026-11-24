@@ -1,0 +1,32 @@
+/** Styles for theme: Base-Dark */
+.TcHmi_Controls_SetDataFramework_PasswordSetData {
+    --sdf-psd-text-color: #e6e9ed;
+    --sdf-psd-value-color: #e6e9ed;
+    --sdf-psd-background: #2b3238;
+    --sdf-psd-background-pressed: #23384b;
+    --sdf-psd-border: #4a545e;
+    --sdf-psd-border-hover: #6b7785;
+    --sdf-psd-accent: #3a8fd6; /* same as the keyboard accent */
+    --sdf-psd-lock-color: #aab4be;
+}
+
+.sdf-pkb {
+    --sdf-pkb-panel: #1e2328;
+    --sdf-pkb-surface: #2b3238;
+    --sdf-pkb-surface-down: #3a434c;
+    --sdf-pkb-func: #353d44;
+    --sdf-pkb-line: #424b54;
+    --sdf-pkb-text: #e6e9ed;
+    --sdf-pkb-text-2: #9aa5b1;
+    --sdf-pkb-accent: #3a8fd6;
+    --sdf-pkb-accent-down: #2c75b3;
+    --sdf-pkb-error: #ff4d4d;
+    --sdf-pkb-ok: #4cc26a; /* password rule met */
+}
+
+/* Lock hint: light bubble, stands out on the dark screen */
+.sdf-psd-tip {
+    --sdf-tip-background: #e6e9ed;
+    --sdf-tip-border: #e6e9ed;
+    --sdf-tip-text: #1f2933;
+}

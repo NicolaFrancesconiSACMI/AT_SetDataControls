@@ -53,6 +53,7 @@ To update, open *Manage NuGet Packages → Updates*.
 |---|---|---|
 | [NumericSetData](docs/controls/NumericSetData.md) | Shows a number and edits it with a built-in keypad. Min/max limits are taken from the PLC. | `Value` → numeric symbol |
 | [StringSetData](docs/controls/StringSetData.md) | Shows a string and edits it with a built-in on-screen keyboard. | `String` → STRING symbol |
+| [PasswordSetData](docs/controls/PasswordSetData.md) | StringSetData for passwords: shows dots, masked keyboard that opens empty, copy refused, optional repeat field. | `Password` → STRING symbol |
 | [BooleanSetData](docs/controls/BooleanSetData.md) | ON/OFF pill switch, with an optional confirmation dialog. | `Variable` → BOOL symbol |
 | [ButtonSetData](docs/controls/ButtonSetData.md) | Push button. *Standard* is TRUE while pressed; *Toggle* switches a BOOL. It lights up from feedback, can ask for confirmation and supports button groups. | `Variable` → BOOL symbol |
 | [ComboboxSetData](docs/controls/ComboboxSetData.md) | Drop-down list built from a list you define or from a PLC enumeration. | `SelectedValue` or `EnumDataSymbol` |
@@ -160,6 +161,8 @@ The default labels use localization keys. Add these keys to your project's local
 | Key | Used by |
 |---|---|
 | `MIN`, `MAX`, `CURRENT` | NumericSetData keypad, StringSetData keyboard (`CURRENT`) |
+| `NEW_PASSWORD`, `REPEAT_PASSWORD` | PasswordSetData keyboard with `NeedRepeat` |
+| `PASSWORD_MIN_LENGTH`, `PASSWORD_MIN_SPECIAL` | PasswordSetData password rules (tooltip of the rule pills); `{0}` = the number, e.g. `Min. {0} characters` |
 | `ON`, `OFF` | BooleanSetData, ButtonSetData confirm dialog |
 | `CONFIRM`, `CANCEL` | Confirm dialogs |
 | `Select` | ComboboxSetData placeholder |

@@ -26,6 +26,7 @@
   "files": [
     "Controls/NumericSetData/NumericSetData.ts",
     "Controls/StringSetData/StringSetData.ts",
+    "Controls/PasswordSetData/PasswordSetData.ts",
     "Controls/BooleanSetData/BooleanSetData.ts",
     "Controls/ComboboxSetData/ComboboxSetData.ts",
     "Controls/NumericVisData/NumericVisData.ts",
